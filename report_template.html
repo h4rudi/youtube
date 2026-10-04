@@ -1,0 +1,136 @@
+<title>CS2 FACEIT: разбор конкурентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: одна колонка-досье; сверху выводы, затем сравнение, затем 15 таблиц каналов */
+:root{
+  --bg:#f3f4f2; --surface:#ffffff; --fg:#1b2126; --muted:#5f6a72; --line:#d9dddb;
+  --accent:#d9480f; --accent-soft:#fbe3d6; --bar:#c2410c; --chip:#e7eae8;
+  --display:"Russo One",system-ui,sans-serif; --body:"Golos Text",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#13171a; --surface:#1b2024; --fg:#e7eaec; --muted:#97a2aa; --line:#2d353b;
+  --accent:#ff8a4c; --accent-soft:#3a2418; --bar:#f0763a; --chip:#262d32; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13171a; --surface:#1b2024; --fg:#e7eaec; --muted:#97a2aa; --line:#2d353b;
+  --accent:#ff8a4c; --accent-soft:#3a2418; --bar:#f0763a; --chip:#262d32; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+a{color:inherit;text-decoration-color:var(--line);text-underline-offset:3px}
+a:hover{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1}
+h2{font-size:24px}
+h3{font-size:19px}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.lede{max-width:68ch;color:var(--muted);margin:12px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:20px;font:13px var(--mono);color:var(--muted)}
+.facts b{color:var(--fg);font-weight:600}
+section>h2{margin-bottom:6px}
+.sub{color:var(--muted);margin:0 0 20px;max-width:72ch}
+.principles{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:p}
+.principles li{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;counter-increment:p;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.principles li::before{content:counter(p,decimal-leading-zero);font:600 13px var(--mono);color:var(--accent);grid-row:span 2;padding-top:3px}
+.principles h4{margin:0;font-size:16px;font-weight:600}
+.principles p{margin:0;color:var(--muted);min-width:0}
+.principles em{font-style:normal;color:var(--fg);font-weight:500}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;min-width:0}
+.panel h3{font-size:16px;margin-bottom:4px}
+.panel .sub{font-size:13px;margin-bottom:14px}
+.bar-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 52px;grid-template-areas:"l t v" "n n n";gap:2px 10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.bar-row:first-of-type{border-top:0}
+.bar-label{grid-area:l;font-size:13.5px}
+.bar-track{grid-area:t;height:12px;position:relative}
+.bar-track::before{content:"";position:absolute;left:0;top:0;bottom:0;border-left:1px solid var(--line)}
+.bar-fill{display:block;height:100%;background:var(--bar);border-radius:0 4px 4px 0}
+.bar-val{grid-area:v;text-align:right;font:600 13px var(--mono);font-variant-numeric:tabular-nums}
+.bar-note{grid-area:n;font-size:12px;color:var(--muted)}
+.bar-row:hover .bar-fill{background:var(--accent)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface);position:sticky;top:0}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--accent-soft)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+td.num:nth-child(2){text-align:left}
+.strong{font-weight:600}
+.muted{color:var(--muted)}
+.title{min-width:280px}
+.title a{text-decoration:none}
+.chip{display:inline-block;font:11px var(--mono);padding:2px 7px;border-radius:3px;background:var(--chip);white-space:nowrap}
+.chip-s{background:var(--accent-soft);color:var(--accent)}
+.ov td:first-child{white-space:nowrap}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.navchip{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;text-decoration:none;background:var(--surface)}
+.channels{display:flex;flex-direction:column;gap:40px}
+.ch-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:8px}
+.ch-head a{font:13px var(--mono)}
+.ch-stats{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0}
+.ch-stats div{display:flex;flex-direction:column}
+.ch-stats dt{font:11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.ch-stats dd{margin:0;font:600 14px var(--mono)}
+.ch-note{margin:0 0 12px;max-width:80ch;color:var(--muted)}
+.method{font-size:13px;color:var(--muted);max-width:80ch}
+.method p{margin:0 0 8px}
+@media (max-width:560px){.bar-row{grid-template-columns:minmax(0,1fr) 52px;grid-template-areas:"l v" "t t" "n n"}}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">CS2 · FACEIT · YouTube RU</div>
+  <h1>Что залетает у конкурентов в CS2</h1>
+  <p class="lede">15 каналов, все ролики и Shorts. Для каждого канала ниже таблица 20 самых просматриваемых видео. Сверху общие выводы о том, какие форматы, темы, длина и упаковка сейчас дают охват на этом рынке.</p>
+  <div class="facts"><span>каналов <b>15</b></span><span>видео проанализировано <b>470</b></span><span>суммарно просмотров <b>17 млн</b></span><span>данные на <b>04.10.2026</b></span></div>
+</header>
+
+<section>
+  <h2>Главные принципы рынка</h2>
+  <p class="sub">Чтобы сравнивать каналы разного размера, каждое видео измерено в «иксах»: во сколько раз оно набрало больше медианы своего канала. 1× значит обычный ролик, 3× значит втрое лучше обычного.</p>
+  <ol class="principles">
+    <li><h4>Весь рынок стоит на FACEIT и цифре ELO</h4><p>Видео со словом FACEIT в названии набирают <em>1,18×</em>, без него <em>0,33×</em>. Почти у каждого хита есть конкретный уровень: <em>2.500 / 3.000 / 3.500 ELO</em>, «10 LVL», «5 лвл». Цифра сразу показывает зрителю уровень игры и ставки.</p></li>
+    <li><h4>Лучший формат: про-игроки и стримеры в кадре (3,7×)</h4><p>Самое большое видео во всей выборке: «Предложил 30 топ-игрокам FACEIT сыграть в пати» у 3cotni, <em>702 тыс.</em> Дальше «Про-игроки оценивают раунды стримеров» (175 тыс.) и «Сыграл против самых популярных стримеров» у kingsteping (231 тыс.). Узнаваемые лица дают охват без большой базы подписчиков.</p></li>
+    <li><h4>Социальный эксперимент и подмена ролей (2,8×)</h4><p>«5 LVL FACEIT, но им управляет 3000 ELO» у decemberv1bes собрал <em>309 тыс. при 1 150 подписчиках</em> (89× медианы канала). Работают и «Дал 5 лвлу аккаунт с 2300 ELO» (284 тыс.), «Притворился читером на 1 LVL», «3 парня против 6 девушек», «Студент впервые зашёл на FACEIT». Схема: неравные силы плюс вопрос «что будет, если…».</p></li>
+    <li><h4>Челлендж с ограничением оружия (2,1×), главный тренд лета–осени 2026</h4><p>«Только дигл» у NK3YX (июнь, <em>348 тыс.</em>) скопировали kingsteping (авг., <em>411 тыс.</em>), zenpai, lazwyy. Потом пошли SSG 08: TenfRly 259 тыс. и kingsteping 290 тыс., оба в сентябре. Тренд переходит между каналами, и вторая версия часто набирает больше первой. Ещё не занятые варианты: AUG, CZ, тапы, дробовики, ножи, гранаты.</p></li>
+    <li><h4>Челлендж по времени: 24 часа / 7 дней / 30 дней (1,5×)</h4><p>«Провёл 7 дней в изоляции» у TenfRly (<em>391 тыс.</em>, 77 мин), «30 дней по 10 игр» у hhakuu (211 тыс.), «Стрелял тапами 7 дней» у NK3YX (220 тыс.). Срок в названии обещает историю с развитием и оправдывает длинный хронометраж. Лучше всего работает в связке с оружейным ограничением: «24 ч только с SSG».</p></li>
+    <li><h4>Серии «Путь до…» держат базу, но редко выстреливают (1,3×)</h4><p>Сильнее всего обычно первый выпуск: «Путь до 10 лвла — хорошее начало» (Limb, 34 тыс.), «Путь в топ-100 KZ — начало» (ronnyaa, 54 тыс. при 345 подписчиках). Серия «С нуля до 3к ELO» перегрета: <em>29 выпусков у 5 каналов за 3 месяца</em>, почти все меньше 10 тыс. Серию стоит вести как фон, а охват делать отдельными роликами-событиями.</p></li>
+    <li><h4>Длина: 15–20 минут и 30+ минут</h4><p>Ролики до 8 минут проваливаются (медиана 0,1× и 3,5 тыс. просмотров). Оптимум для обычного ролика 15–20 мин (1,4×). Челленджи на 30–45 мин набирают 1,9×, топовые TenfRly идут 70+ минут. Время просмотра решает больше, чем короткий формат.</p></li>
+    <li><h4>Упаковка названия: КАПС, действие от первого лица, эмоция в скобках</h4><p>Две трети роликов идут капсом, и они набирают 1,02× против 0,73× у обычного регистра. Названия, которые начинаются с глагола в прошедшем времени («СЫГРАЛ», «ПРОВЁЛ», «АПНУЛ», «ЗАДОНАТИЛ»), дают 1,3× против 1,0×. Многоточие-интрига «..» даёт 2,2× (30 видео). Эмоция в скобках работает как второй крючок: «(я сошёл с ума..)», «(забанили)», «(меня все ненавидят...)».</p></li>
+    <li><h4>Упаковка важнее идеи</h4><p>zenpai снял «Играю только с диглом на FACEIT (2500 ELO)» и получил <em>1,2 тыс.</em> Через два месяца та же идея под названием «Только ДИГЛ на FACEIT 2500 ELO в CS2! Все в шоке..» набрала <em>25,7 тыс.</em> Ставки и реакция в названии плюс попадание в тренд дали в 20 раз больше.</p></li>
+    <li><h4>Маленький канал может залететь, алгоритм не смотрит на подписчиков</h4><p>Топ-20 у decemberv1bes набирает в среднем 19 своих подписчиков на видео, у ronnyaa 57, у kingsteping 17. У гигантов (hhakuu, TenfRly) этот показатель 2–3. Охват приходит из рекомендаций, поэтому один сильный ролик может перезапустить канал с нуля.</p></li>
+    <li><h4>Shorts: дополнительный канал, не основной</h4><p>У крупных каналов Shorts дают меньше 15% просмотров и почти не дают вовлечения (лайков на просмотр примерно в 3 раза меньше: 1,2% против 3,4%). Лучше заходят моменты на 6–30 секунд с вопросом или шоком («как ОН не попал с авика?!») и нарезки с подписью уровня («самый недовольный игрок на FACEIT», 82 тыс.). Shorts имеет смысл использовать как воронку на длинный ролик («полная игра на канале»).</p></li>
+    <li><h4>Свободные ниши и комментарии</h4><p>У KZ, мувмента и паркура мало конкурентов и лучшая вовлечённость (вифейв: 4,1% лайков, ronnyaa: 54 тыс. с первого ролика). Комментарии собирают спорные темы и вопросы зрителю: «Почему апнуть 25 000 невозможно» (10,6 на 1000 просмотров), «Как дорога к 3000 ELO уничтожает игроков» (40,8 на 1000). При этом вопрос в названии снижает просмотры (0,7×), так что его лучше ставить в скобки или в превью.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Что работает в цифрах</h2>
+  <p class="sub">Только длинные видео (364 шт.). Значение: медиана «иксов» относительно обычного ролика своего канала.</p>
+  <div class="charts">
+    <div class="panel"><h3>Тема ролика</h3><p class="sub">1× = обычный ролик канала</p>{{TOPICS}}</div>
+    <div class="panel"><h3>Длина ролика</h3><p class="sub">1× = обычный ролик канала</p>{{DURS}}</div>
+  </div>
+</section>
+
+<section>
+  <h2>Сравнение каналов</h2>
+  <p class="sub">«Топ-1 / подписчики» показывает, во сколько раз лучший ролик превысил базу подписчиков. Чем выше значение, тем больше канал живёт за счёт рекомендаций.</p>
+  <div class="scroll"><table class="ov"><thead><tr><th>Канал</th><th>Подписчики</th><th>Видео</th><th>Медиана просм.</th><th>Топ-1</th><th>Топ-1 / подписч.</th><th>Лайки топ-20</th></tr></thead><tbody>{{OVERVIEW}}</tbody></table></div>
+</section>
+
+<section>
+  <h2>Топ-20 видео каждого канала</h2>
+  <p class="sub">Отсортировано по просмотрам. Видео и Shorts в одном рейтинге, формат отмечен. Название ведёт на ролик.</p>
+  <nav class="nav">{{NAV}}</nav>
+  <div class="channels">{{TABLES}}</div>
+</section>
+
+<section class="method">
+  <h2 style="font-size:18px;margin-bottom:8px">Как собраны данные</h2>
+  <p>Списки роликов взяты с вкладок «Видео» и «Shorts» каждого канала (вкладок трансляций ни у кого нет). Просмотры, лайки, комментарии и дата публикации взяты со страницы каждого ролика 4 октября 2026. Названия оригинальные, без автоперевода YouTube.</p>
+  <p>Комментарии = 0 означает, что их нет или они отключены. У каналов DuraCS, ronnyaa, kingsteping, lazwyy_31, zenpai1337, tolkorisk, вифейв, NK3YX и wwhysoempty меньше 20 видео, поэтому в таблицу попали все их ролики.</p>
+</section>
+</div>
