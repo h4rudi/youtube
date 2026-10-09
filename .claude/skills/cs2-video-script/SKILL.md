@@ -18,6 +18,7 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 | Структура ролика по формату (путь до 10 LVL на 120 пинге, челлендж, эксперимент) | `templates/formats.md` |
 | Правила монтажа и чек-лист | `references/editing-rules.md` |
 | Маскот (разбор TenfRly, план мопса, где вставлять в ролик) | `references/mascot.md` |
+| Превью: разбор конкурентов и система превью с мопсом | `references/thumbnails.md` |
 | Монтаж, начало ролика, удержание | `references/montage-5-competitors.md` |
 | Разборы других авторов | `references/<автор>.md` (список — в конце этого файла) |
 
@@ -59,3 +60,4 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 - `templates/formats.md` — три структуры: путь до 10 LVL на 120 пинге, челлендж, эксперимент (08.10.2026).
 - `references/editing-rules.md` — 27 правил монтажа и чек-лист (08.10.2026).
 - `references/mascot.md` — маскот TenfRly и план мопса пользователя (09.10.2026).
+- `references/thumbnails.md` — превью 8 каналов и система превью с мопсом (09.10.2026).
