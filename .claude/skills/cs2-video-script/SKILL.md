@@ -19,6 +19,7 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 | Правила монтажа и чек-лист | `references/editing-rules.md` |
 | Маскот (разбор TenfRly, план мопса, где вставлять в ролик) | `references/mascot.md` |
 | Превью: разбор конкурентов и система превью с мопсом | `references/thumbnails.md` |
+| Настройка записи (OBS, дорожки, чек-лист перед записью) | `references/recording-setup.md` |
 | Монтаж, начало ролика, удержание | `references/montage-5-competitors.md` |
 | Разборы других авторов | `references/<автор>.md` (список — в конце этого файла) |
 
