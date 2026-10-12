@@ -21,6 +21,7 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 | Превью: разбор конкурентов и система превью с мопсом | `references/thumbnails.md` |
 | Настройка записи (OBS, дорожки, чек-лист перед записью) | `references/recording-setup.md` |
 | Монтаж, начало ролика, удержание | `references/montage-5-competitors.md` |
+| Пошаговый порядок монтажа, дорожки, звук | `references/editing-workflow.md` |
 | Разборы других авторов | `references/<автор>.md` (список — в конце этого файла) |
 
 Перед сценарием всегда читай шаблон, `references/market.md` и `references/user-profile.md`. Разбор автора читай, если пользователь просит «в стиле <автор>» или если в шаблоне есть ссылка на него.
@@ -62,3 +63,4 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 - `references/editing-rules.md` — 27 правил монтажа и чек-лист (08.10.2026).
 - `references/mascot.md` — маскот TenfRly и план мопса пользователя (09.10.2026).
 - `references/thumbnails.md` — превью 8 каналов и система превью с мопсом (09.10.2026).
+- `references/editing-workflow.md` — пошаговый порядок монтажа для новичка (DaVinci Resolve), звук (12.10.2026).
