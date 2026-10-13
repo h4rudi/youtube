@@ -22,6 +22,9 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 | Настройка записи (OBS, дорожки, чек-лист перед записью) | `references/recording-setup.md` |
 | Монтаж, начало ролика, удержание | `references/montage-5-competitors.md` |
 | Пошаговый порядок монтажа, дорожки, звук | `references/editing-workflow.md` |
+| Что ставить на закадр (TenfRly), динамичное интро (БЕДЫЧ) | `references/voiceover-and-intro.md` |
+| Моушен-графика кодом (интро, карточки игр, раскрытие уровня) | `motion/` в корне репозитория (Remotion), `motion/README.md` |
+| План конкретного выпуска | `episodes/` |
 | Разборы других авторов | `references/<автор>.md` (список — в конце этого файла) |
 
 Перед сценарием всегда читай шаблон, `references/market.md` и `references/user-profile.md`. Разбор автора читай, если пользователь просит «в стиле <автор>» или если в шаблоне есть ссылка на него.
@@ -64,3 +67,5 @@ description: Пишет сценарии роликов для CS2/FACEIT YouTub
 - `references/mascot.md` — маскот TenfRly и план мопса пользователя (09.10.2026).
 - `references/thumbnails.md` — превью 8 каналов и система превью с мопсом (09.10.2026).
 - `references/editing-workflow.md` — пошаговый порядок монтажа для новичка (DaVinci Resolve), звук (12.10.2026).
+- `references/voiceover-and-intro.md` — закадр TenfRly и интро БЕДЫЧ (13.10.2026).
+- `episodes/ep01-kalibrovka.md` — план выпуска 1 (13.10.2026).
