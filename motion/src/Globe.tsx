@@ -11,8 +11,11 @@ const FRA: [number, number] = [8.68, 50.11];
 const KM = 8279;
 
 // route timeline (local frames): 0-40 globe appears zoomed on Vladivostok, 40-60 pin, 70-290 route, 290+ arrival
-export const Globe: React.FC = () => {
-  const f = useCurrentFrame();
+export type GlobePal = {ocean0: string; ocean1: string; line: string; land: string};
+const DEF: GlobePal = {ocean0: '#3a3a3a', ocean1: '#151515', line: '#e6e6e6', land: '#bdbdbd'};
+
+export const Globe: React.FC<{speed?: number; pal?: GlobePal}> = ({speed = 1, pal = DEF}) => {
+  const f = useCurrentFrame() * speed;
   const landF = useMemo(() => feature(land50 as any, (land50 as any).objects.land) as any, []);
   const germany = useMemo(() => (feature(countries as any, (countries as any).objects.countries) as any).features.find((c: any) => c.id === '276'), []);
   const interp = useMemo(() => geoInterpolate(VLA, FRA), []);
@@ -53,14 +56,14 @@ export const Globe: React.FC = () => {
     <svg width={1920} height={1080} style={{position: 'absolute', inset: 0, opacity: appear}}>
       <defs>
         <radialGradient id="ocean" cx="45%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#3a3a3a" />
-          <stop offset="100%" stopColor="#151515" />
+          <stop offset="0%" stopColor={pal.ocean0} />
+          <stop offset="100%" stopColor={pal.ocean1} />
         </radialGradient>
         <filter id="glow"><feGaussianBlur stdDeviation="6" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
-      <circle cx={960} cy={560} r={scale} fill="url(#ocean)" stroke="#d9d9d9" strokeOpacity={0.6} strokeWidth={3} />
-      <path d={path(geoGraticule10()) || ''} fill="none" stroke="#e6e6e6" strokeOpacity={0.16} strokeWidth={1.5} />
-      <path d={path(landF) || ''} fill="#bdbdbd" fillOpacity={0.28} stroke="#e8e8e8" strokeOpacity={0.7} strokeWidth={1.6} />
+      <circle cx={960} cy={560} r={scale} fill="url(#ocean)" stroke={pal.line} strokeOpacity={0.6} strokeWidth={3} />
+      <path d={path(geoGraticule10()) || ''} fill="none" stroke={pal.line} strokeOpacity={0.16} strokeWidth={1.5} />
+      <path d={path(landF) || ''} fill={pal.land} fillOpacity={0.3} stroke={pal.line} strokeOpacity={0.7} strokeWidth={1.6} />
       {germany && <path d={path(germany) || ''} fill={S.orange} fillOpacity={interpolate(f, [285, 300], [0, 0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />}
       <path d={route} fill="none" stroke={S.orange} strokeWidth={14} strokeOpacity={0.25} strokeLinecap="round" />
       <path d={route} fill="none" stroke={S.orange} strokeWidth={6} strokeLinecap="round" strokeDasharray="22 14" strokeDashoffset={-f * 2} filter="url(#glow)" />

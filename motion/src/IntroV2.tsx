@@ -150,7 +150,7 @@ const Cursor: React.FC<{x: number; y: number; press: boolean}> = ({x, y, press})
     <path d="M4 4 L4 70 L22 54 L34 82 L46 77 L34 50 L58 50 Z" fill="#fff" stroke="#111" strokeWidth={4} strokeLinejoin="round" />
   </svg>
 );
-const Thumb: React.FC<{filled: boolean; size?: number}> = ({filled, size = 54}) => (
+export const Thumb: React.FC<{filled: boolean; size?: number}> = ({filled, size = 54}) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 6.59 7.59C6.22 7.95 6 8.45 6 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"
       fill={filled ? '#fff' : 'none'} stroke="#fff" strokeWidth={filled ? 0 : 1.6} />
@@ -161,7 +161,7 @@ const Bell: React.FC<{ring: number}> = ({ring}) => (
     <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="#fff" />
   </svg>
 );
-const B6: React.FC = () => {
+export const B6: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const inS = spring({frame: f, fps, config: {damping: 14}});
