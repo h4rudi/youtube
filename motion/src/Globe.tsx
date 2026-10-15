@@ -14,7 +14,7 @@ const KM = 8279;
 export type GlobePal = {ocean0: string; ocean1: string; line: string; land: string};
 const DEF: GlobePal = {ocean0: '#3a3a3a', ocean1: '#151515', line: '#e6e6e6', land: '#bdbdbd'};
 
-export const Globe: React.FC<{speed?: number; pal?: GlobePal}> = ({speed = 1, pal = DEF}) => {
+export const Globe: React.FC<{speed?: number; pal?: GlobePal; font?: string}> = ({speed = 1, pal = DEF, font}) => {
   const f = useCurrentFrame() * speed;
   const landF = useMemo(() => feature(land50 as any, (land50 as any).objects.land) as any, []);
   const germany = useMemo(() => (feature(countries as any, (countries as any).objects.countries) as any).features.find((c: any) => c.id === '276'), []);
@@ -47,7 +47,7 @@ export const Globe: React.FC<{speed?: number; pal?: GlobePal}> = ({speed = 1, pa
         <circle r={13} fill={col} stroke="#fff" strokeWidth={4} />
         <g transform="translate(0,-40)">
           <rect x={-label.length * 13 - 20} y={-46} width={label.length * 26 + 40} height={56} rx={12} fill="rgba(10,10,10,0.85)" stroke={col} strokeWidth={3} />
-          <text x={0} y={-8} textAnchor="middle" fill="#fff" style={{fontFamily: 'Montserrat', fontWeight: 900, fontSize: 30}}>{label}</text>
+          <text x={0} y={-8} textAnchor="middle" fill="#fff" style={{fontFamily: font ?? 'Montserrat', fontWeight: 900, fontSize: font ? 26 : 30}}>{label}</text>
         </g>
       </g>
     );
@@ -78,9 +78,9 @@ export const Globe: React.FC<{speed?: number; pal?: GlobePal}> = ({speed = 1, pa
       {/* HUD bottom: distance + ping like a navigator */}
       <g transform="translate(960,1000)" opacity={interpolate(f, [60, 75], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
         <rect x={-330} y={-50} width={660} height={86} rx={20} fill="rgba(10,10,10,0.85)" stroke="#555" strokeWidth={2} />
-        <text x={-170} y={8} textAnchor="middle" fill="#fff" style={{fontFamily: 'Unbounded', fontWeight: 900, fontSize: 40}}>{km.toLocaleString('ru-RU')} КМ</text>
+        <text x={-170} y={8} textAnchor="middle" fill="#fff" style={{fontFamily: font ?? 'Unbounded', fontWeight: 900, fontSize: 40}}>{km.toLocaleString('ru-RU')} КМ</text>
         <line x1={0} y1={-30} x2={0} y2={20} stroke="#555" strokeWidth={2} />
-        <text x={170} y={8} textAnchor="middle" fill={ping < 60 ? '#2bd96b' : ping < 110 ? '#ffc400' : S.red} style={{fontFamily: 'Unbounded', fontWeight: 900, fontSize: 40}}>{ping >= 150 ? '150+' : ping} MS</text>
+        <text x={170} y={8} textAnchor="middle" fill={ping < 60 ? '#2bd96b' : ping < 110 ? '#ffc400' : S.red} style={{fontFamily: font ?? 'Unbounded', fontWeight: 900, fontSize: 40}}>{ping >= 150 ? '150+' : ping} MS</text>
       </g>
     </svg>
   );
