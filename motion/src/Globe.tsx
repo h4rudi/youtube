@@ -14,7 +14,7 @@ const KM = 8279;
 export type GlobePal = {ocean0: string; ocean1: string; line: string; land: string};
 const DEF: GlobePal = {ocean0: '#3a3a3a', ocean1: '#151515', line: '#e6e6e6', land: '#bdbdbd'};
 
-export const Globe: React.FC<{speed?: number; pal?: GlobePal; font?: string}> = ({speed = 1, pal = DEF, font}) => {
+export const Globe: React.FC<{speed?: number; pal?: GlobePal; font?: string; hudY?: number}> = ({speed = 1, pal = DEF, font, hudY = 1000}) => {
   const f = useCurrentFrame() * speed;
   const landF = useMemo(() => feature(land50 as any, (land50 as any).objects.land) as any, []);
   const germany = useMemo(() => (feature(countries as any, (countries as any).objects.countries) as any).features.find((c: any) => c.id === '276'), []);
@@ -76,7 +76,7 @@ export const Globe: React.FC<{speed?: number; pal?: GlobePal; font?: string}> = 
         </g>
       )}
       {/* HUD bottom: distance + ping like a navigator */}
-      <g transform="translate(960,1000)" opacity={interpolate(f, [60, 75], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
+      <g transform={`translate(960,${hudY})`} opacity={interpolate(f, [60, 75], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
         <rect x={-330} y={-50} width={660} height={86} rx={20} fill="rgba(10,10,10,0.85)" stroke="#555" strokeWidth={2} />
         <text x={-170} y={8} textAnchor="middle" fill="#fff" style={{fontFamily: font ?? 'Unbounded', fontWeight: 900, fontSize: 40}}>{km.toLocaleString('ru-RU')} КМ</text>
         <line x1={0} y1={-30} x2={0} y2={20} stroke="#555" strokeWidth={2} />

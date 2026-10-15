@@ -10,6 +10,7 @@ import {IntroV5, V5_FRAMES} from './IntroV5';
 import {Outro, OUTRO_FRAMES} from './Outro';
 import {IntroV6, V6_FRAMES} from './IntroV6';
 import {IntroV7, V7_FRAMES} from './IntroV7';
+import {IntroV8, V8_FRAMES} from './IntroV8';
 
 export const Root: React.FC = () => (
   <>
@@ -23,5 +24,6 @@ export const Root: React.FC = () => (
     <Composition id="Outro" component={Outro} durationInFrames={OUTRO_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
     <Composition id="IntroV6" component={IntroV6} durationInFrames={V6_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
     <Composition id="IntroV7" component={IntroV7} durationInFrames={V7_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
+    <Composition id="IntroV8" component={IntroV8} durationInFrames={V8_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
   </>
 );
