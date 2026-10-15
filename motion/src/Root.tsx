@@ -5,6 +5,7 @@ import {GameCard} from './GameCard';
 import {Reveal} from './Reveal';
 import {IntroV2, V2_FRAMES} from './IntroV2';
 import {IntroV3, V3_FRAMES} from './IntroV3';
+import {IntroV4, V4_FRAMES} from './IntroV4';
 
 export const Root: React.FC = () => (
   <>
@@ -13,5 +14,6 @@ export const Root: React.FC = () => (
     <Composition id="Reveal" component={Reveal} durationInFrames={330} fps={60} width={1920} height={1080} />
     <Composition id="IntroV2" component={IntroV2} durationInFrames={V2_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
     <Composition id="IntroV3" component={IntroV3} durationInFrames={V3_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
+    <Composition id="IntroV4" component={IntroV4} durationInFrames={V4_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
   </>
 );
