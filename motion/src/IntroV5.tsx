@@ -311,16 +311,16 @@ export const IntroV5: React.FC<{sound?: boolean}> = ({sound = true}) => {
           <Sfx at={430 + 55} s="blip" v={0.6} /><Sfx at={430 + 85} s="blip_low" v={0.6} />
           <Sfx at={430 + 100} s="lag" v={0.85} /><Sfx at={430 + 118} s="glitch" v={0.5} /><Sfx at={430 + 140} s="impact" v={1} /><Sfx at={430 + 142} s="error" v={0.5} />
           {/* S4 globe (speed 1.15): pin at 40/1.15, route 70..290 /1.15 */}
-          <Sfx at={650 + 35} s="blip" v={0.9} /><TextSfx at={650 + 35} v={0.5} /><Sfx at={650 + 61} s="riser" v={0.45} />
-          <Sfx at={650 + 252} s="blip" v={0.9} /><Sfx at={650 + 254} s="hit" v={0.8} /><TextSfx at={650 + 252} v={0.5} />
+          <Sfx at={650 + 35} s="blip" v={0.9} /><Sfx at={650 + 61} s="riser" v={0.45} />
+          <Sfx at={650 + 252} s="blip" v={0.9} /><Sfx at={650 + 254} s="hit" v={0.8} />
           {/* S5 */}
           <Sfx at={1000} s="impact" v={1} /><Sfx at={1014} s="shimmer" v={0.6} />
           {/* S6 card (K=1.1): subscribe 86, like 195 */}
-          <TextSfx at={1130 + 4} v={0.6} />
+
           <Sfx at={1130 + 86} s="click" v={1} /><Sfx at={1130 + 88} s="ding" v={0.7} />
           <Sfx at={1130 + 195} s="click" v={1} /><Sfx at={1130 + 197} s="likepop" v={0.8} />
           {Array.from({length: 14}).map((_, i) => <Sfx key={'l' + i} at={1130 + 217 + i * 4.8} s="tick" v={0.55} />)}
-          <Sfx at={1130 + 285} s="ding" v={0.8} /><TextSfx at={1130 + 291} v={0.7} />
+          <Sfx at={1130 + 285} s="ding" v={0.8} />
         </>
       )}
     </AbsoluteFill>
