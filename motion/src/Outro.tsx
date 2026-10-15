@@ -1,4 +1,4 @@
-// Финал выпуска 1 (15 с): синий фон пользователя, шрифт Zero Cool, текст волной с чёрными тенями,
+// Финал выпуска 1 (15 с): синий фон пользователя, шрифт Benzin Bold (как в интро), текст волной с чёрными тенями,
 // графика к ключевым словам (калибровка, мало ELO, сыграл неплохо), комментарий + лайк + подписка, прощание
 import React from 'react';
 import {AbsoluteFill, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig, Easing, Audio, random, continueRender, delayRender} from 'remotion';
@@ -9,14 +9,14 @@ import {Thumb} from './IntroV2';
 import {GAMES, FINAL} from './games';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
-const FONT = 'ZeroCool';
+const FONT = 'Benzin';
 const C = {white: '#f4f8ff', cyan: '#7fd8ff', orange: '#ff6a13', green: '#3de08a', red: '#ff4a5a', panel: 'rgba(8,18,40,0.88)', line: '#2c4f86', yellow: '#ffc83a'};
 
 let zc = false;
 const loadZC = () => {
   if (zc || typeof document === 'undefined') return; zc = true;
-  const h = delayRender('zerocool');
-  new FontFace(FONT, `url(${staticFile('fonts/ZeroCool.otf')})`).load().then((l) => { document.fonts.add(l); continueRender(h); });
+  const h = delayRender('benzin-outro');
+  new FontFace(FONT, `url(${staticFile('fonts/Benzin-Bold.ttf')})`).load().then((l) => { document.fonts.add(l); continueRender(h); });
 };
 
 const extrude = (depth: number) => {
@@ -57,8 +57,8 @@ const S1: React.FC = () => {
   const f = useCurrentFrame();
   return (
     <Center style={{gap: 10}}>
-      <Wave text="ВОТ ТАКАЯ" at={2} size={90} color={C.cyan} />
-      <Wave text="КАЛИБРОВКА" at={14} size={170} />
+      <Wave text="ВОТ ТАКАЯ" at={2} size={78} color={C.cyan} />
+      <Wave text="КАЛИБРОВКА" at={14} size={140} />
       <div style={{display: 'flex', gap: 16, marginTop: 40, perspective: 900}}>
         {GAMES.map((g, i) => {
           const t = interpolate(f - 40 - i * 4, [0, 16], [0, 1], {...clamp, easing: Easing.out(Easing.back(1.6))});
@@ -66,7 +66,7 @@ const S1: React.FC = () => {
           return (
             <div key={i} style={{width: 92, height: 110, borderRadius: 16, background: t > 0.5 ? col : '#14284d', border: `3px solid ${t > 0.5 ? '#ffffff55' : C.line}`,
               transform: `rotateY(${(1 - t) * 180}deg) translateY(${(1 - t) * 30}px)`, opacity: interpolate(f - 40 - i * 4, [0, 4], [0, 1], clamp),
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT, fontSize: 52, color: '#fff', textShadow: '0 3px 0 rgba(0,0,0,0.35)', boxShadow: t > 0.5 ? `0 0 24px ${col}66` : 'none'}}>
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT, fontSize: 44, color: '#fff', textShadow: '0 3px 0 rgba(0,0,0,0.35)', boxShadow: t > 0.5 ? `0 0 24px ${col}66` : 'none'}}>
               {t > 0.5 ? (g.win ? 'W' : 'L') : ''}
             </div>
           );
@@ -89,10 +89,10 @@ const S2: React.FC = () => {
   const sad = f >= 128;
   return (
     <Center style={{gap: 14}}>
-      <Wave text="НЕ ТАК МНОГО" at={2} size={100} color={C.cyan} />
+      <Wave text="НЕ ТАК МНОГО" at={2} size={84} color={C.cyan} />
       <div style={{display: 'flex', alignItems: 'baseline', gap: 26}}>
-        <Wave text="ЭЛО" at={18} size={170} />
-        <div style={{fontFamily: FONT, fontSize: 110, color: sad ? C.red : C.white, textShadow: extrude(10), opacity: interpolate(f, [40, 46], [0, 1], clamp), minWidth: 300}}>{val}</div>
+        <Wave text="ЭЛО" at={18} size={150} />
+        <div style={{fontFamily: FONT, fontSize: 96, color: sad ? C.red : C.white, textShadow: extrude(10), opacity: interpolate(f, [40, 46], [0, 1], clamp), minWidth: 300}}>{val}</div>
       </div>
       <div style={{position: 'relative', width: 1200, marginTop: 40, transform: `translateY(${sag}px)`}}>
         <div style={{height: 46, borderRadius: 23, background: C.panel, border: `3px solid ${C.line}`, overflow: 'hidden'}}>
@@ -124,7 +124,7 @@ const Chip: React.FC<{label: string; value: string; at: number}> = ({label, valu
     <div style={{transform: `translateY(${(1 - s) * 80}px) scale(${0.6 + 0.4 * s})`, opacity: Math.min(1, s * 1.5), padding: '22px 36px', borderRadius: 24, background: C.panel,
       border: `3px solid ${C.line}`, boxShadow: '0 20px 40px rgba(0,0,0,0.35)', textAlign: 'center', minWidth: 300}}>
       <div style={{fontFamily: 'Montserrat', fontWeight: 900, fontSize: 28, color: C.cyan, letterSpacing: 3}}>{label}</div>
-      <div style={{fontFamily: FONT, fontSize: 76, color: C.white, textShadow: extrude(6)}}>{value}</div>
+      <div style={{fontFamily: FONT, fontSize: 64, color: C.white, textShadow: extrude(6)}}>{value}</div>
     </div>
   );
 };
@@ -134,15 +134,15 @@ const S3: React.FC = () => {
   const st = pop(f, 120, fps, 420, 13);
   return (
     <Center style={{gap: 14}}>
-      <Wave text="СЫГРАЛ" at={2} size={100} color={C.cyan} />
-      <Wave text="НЕПЛОХО" at={14} size={170} />
+      <Wave text="СЫГРАЛ" at={2} size={84} color={C.cyan} />
+      <Wave text="НЕПЛОХО" at={14} size={140} />
       <div style={{display: 'flex', gap: 30, marginTop: 40, position: 'relative'}}>
         <Chip label="К/Д" value="1.23" at={42} />
         <Chip label="РЕЙТИНГ" value="1.23" at={56} />
         <Chip label="ЛУЧШАЯ" value="25/8" at={70} />
         {f >= 120 && (
           <div style={{position: 'absolute', right: -190, top: 110, transform: `rotate(-12deg) scale(${interpolate(st, [0, 1], [2.6, 1])})`, opacity: Math.min(1, st * 2),
-            padding: '10px 26px', border: `7px solid ${C.green}`, borderRadius: 18, fontFamily: FONT, fontSize: 64, color: C.green, background: 'rgba(8,30,20,0.55)', textShadow: '0 4px 0 rgba(0,0,0,0.4)'}}>
+            padding: '10px 26px', border: `7px solid ${C.green}`, borderRadius: 18, fontFamily: FONT, fontSize: 52, color: C.green, background: 'rgba(8,30,20,0.55)', textShadow: '0 4px 0 rgba(0,0,0,0.4)'}}>
             НЕПЛОХО ✓
           </div>
         )}
@@ -244,9 +244,9 @@ const S5: React.FC = () => {
       <div style={{transform: `scale(${av}) rotate(${wave * 0.3}deg)`, marginBottom: 20}}>
         <Img src={staticFile('img/avatar.png')} style={{width: 230, height: 230, borderRadius: '50%', border: '6px solid #fff', boxShadow: `0 0 50px ${C.cyan}88`}} />
       </div>
-      <Wave text="С ВАМИ БЫЛ" at={8} size={80} color={C.cyan} />
-      <Wave text="ХАРУДИ" at={20} size={170} />
-      <Wave text="ВСЕМ ПОКА!" at={48} size={100} color={C.orange} />
+      <Wave text="С ВАМИ БЫЛ" at={8} size={66} color={C.cyan} />
+      <Wave text="ХАРУДИ" at={20} size={140} />
+      <Wave text="ВСЕМ ПОКА!" at={48} size={84} color={C.orange} />
     </Center>
   );
 };
