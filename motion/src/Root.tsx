@@ -11,6 +11,7 @@ import {Outro, OUTRO_FRAMES} from './Outro';
 import {IntroV6, V6_FRAMES} from './IntroV6';
 import {IntroV7, V7_FRAMES} from './IntroV7';
 import {IntroV8, V8_FRAMES} from './IntroV8';
+import {VoiceTag, VoiceTagPreview, VT_W, VT_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
   <>
@@ -25,5 +26,7 @@ export const Root: React.FC = () => (
     <Composition id="IntroV6" component={IntroV6} durationInFrames={V6_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
     <Composition id="IntroV7" component={IntroV7} durationInFrames={V7_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
     <Composition id="IntroV8" component={IntroV8} durationInFrames={V8_FRAMES} fps={60} width={1920} height={1080} defaultProps={{sound: true}} />
+    <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
+    <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
   </>
 );
