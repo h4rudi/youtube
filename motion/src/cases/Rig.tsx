@@ -117,7 +117,7 @@ export const DiscordCard: React.FC<{appear: number; img: number}> = ({appear, im
         {img > 0 && (
           <div style={{marginTop: 18, height: 230, borderRadius: 18, background: 'radial-gradient(circle at 50% 50%, #5a4310, #1a1407 70%)', border: `4px solid ${RAR.gold}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: img, transform: `scale(${0.9 + 0.1 * img})`, boxShadow: `0 0 40px ${RAR.gold}66`}}>
-            <KnifeIcon w={420} glow />
+            <KnifeIcon w={250} glow />
           </div>
         )}
       </div>
