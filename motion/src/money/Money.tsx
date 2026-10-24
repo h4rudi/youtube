@@ -597,6 +597,9 @@ const SFX: Fx[] = [
   [S.end, 'money/boom.wav', 0.5], [S.end + 2, 'sfx2/stamp.wav', 0.4], [S.end + 10, 'sfx2/stamp.wav', 0.45], [S.end + 18, 'sfx2/stamp.wav', 0.4], [v(181) + 4, 'sfx2/pop.wav', 0.4],
 ];
 
+// все эффекты тише голоса; деньги (шелест, касса, щелчки табло) — заметно тише остальных
+const sfxGain = (src: string) => (/money\/(rustle|cash|flip)/.test(src) ? 0.25 : 0.55);
+
 const Sound: React.FC = () => (
   <>
     {VO.map((o) => (
@@ -608,13 +611,13 @@ const Sound: React.FC = () => (
       <Sequence key={i} from={Math.round(i * 11.5 * FPS)} durationInFrames={12 * FPS}>
         <Audio src={staticFile('tilt/pad.wav')} volume={(x) => {
           const g = i * 11.5 * FPS + x;
-          return g >= S.yard && g < S.guest ? 0.07 : 0.14;
+          return g >= S.yard && g < S.guest ? 0.05 : 0.1;
         }} />
       </Sequence>
     ))}
     {SFX.map(([at, src, vol], i) => (
       <Sequence key={i} from={Math.max(0, at)} durationInFrames={FPS * 2}>
-        <Audio src={staticFile(src)} volume={vol} />
+        <Audio src={staticFile(src)} volume={vol * sfxGain(src)} />
       </Sequence>
     ))}
   </>
