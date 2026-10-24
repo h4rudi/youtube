@@ -1,6 +1,6 @@
 // Реквизит ролика «100 кейсов»: рулетка кейса, сетка 100 результатов, «вебка» с Лёхой, иконки кейса/ключа/ножа.
 import React from 'react';
-import {random} from 'remotion';
+import {random, staticFile} from 'remotion';
 import {LyokhaBust, Mood} from '../money/Lyokha';
 
 export const RAR = {blue: '#4b69ff', purple: '#8847ff', pink: '#d32ce6', red: '#eb4b4b', gold: '#e4ae39', empty: '#1d2130'};
@@ -13,21 +13,15 @@ const INK = '#15131a';
 export const GunIcon: React.FC<{c: string; w?: number}> = ({c, w = 140}) => (
   <svg width={w} height={w * 0.43} viewBox="0 0 140 60"><path d="M4 20 H110 L120 14 H136 V28 H114 L106 40 H70 L62 56 H44 L50 40 H30 L20 30 H4 Z" fill={c} /></svg>
 );
+// нож-бабочка и кейс — исходники пользователя (фон вырезан, public/cases/*.png); <svg><image> работает и в HTML, и внутри SVG
 export const KnifeIcon: React.FC<{c?: string; w?: number; glow?: boolean}> = ({c = RAR.gold, w = 140, glow}) => (
-  <svg width={w} height={w * 0.43} viewBox="0 0 140 60" style={glow ? {filter: `drop-shadow(0 0 12px ${c})`} : undefined}>
-    <path d="M6 30 Q40 12 86 22 L92 30 L86 38 Q40 44 6 30 Z" fill="#e9eef5" stroke={INK} strokeWidth={2} />
-    <rect x={90} y={22} width={46} height={7} rx={3} fill={c} stroke={INK} strokeWidth={2} />
-    <rect x={90} y={32} width={46} height={7} rx={3} fill={c} stroke={INK} strokeWidth={2} />
-    <circle cx={92} cy={30} r={4} fill={INK} />
+  <svg width={w} height={w * (365 / 443)} viewBox="0 0 443 365" style={glow ? {filter: `drop-shadow(0 0 14px ${c})`, overflow: 'visible'} : {overflow: 'visible'}}>
+    <image href={staticFile('cases/butterfly.png')} width={443} height={365} />
   </svg>
 );
 export const CaseIcon: React.FC<{w?: number}> = ({w = 120}) => (
-  <svg width={w} height={w * 0.75} viewBox="0 0 120 90">
-    <rect x={6} y={18} width={108} height={66} rx={10} fill="#d88a2a" stroke={INK} strokeWidth={4} />
-    <rect x={6} y={18} width={108} height={22} rx={10} fill="#efa640" stroke={INK} strokeWidth={4} />
-    <path d="M44 18 V8 H76 V18" stroke={INK} strokeWidth={5} fill="none" />
-    <circle cx={60} cy={58} r={13} fill="#2a2d36" stroke={INK} strokeWidth={3} />
-    <path d="M54 58 h12 M60 52 v12" stroke="#efa640" strokeWidth={3} />
+  <svg width={w} height={w * (273 / 373)} viewBox="0 0 373 273" style={{overflow: 'visible'}}>
+    <image href={staticFile('cases/case.png')} width={373} height={273} />
   </svg>
 );
 export const KeyIcon: React.FC<{w?: number}> = ({w = 120}) => (
