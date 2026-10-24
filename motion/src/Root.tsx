@@ -11,6 +11,7 @@ import {Outro, OUTRO_FRAMES} from './Outro';
 import {IntroV6, V6_FRAMES} from './IntroV6';
 import {IntroV7, V7_FRAMES} from './IntroV7';
 import {IntroV8, V8_FRAMES} from './IntroV8';
+import {Tilt, TILT_FRAMES} from './tilt/Tilt';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -29,5 +30,6 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Tilt" component={Tilt} durationInFrames={TILT_FRAMES} fps={30} width={1080} height={1920} />
   </>
 );
