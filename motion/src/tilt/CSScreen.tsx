@@ -8,6 +8,8 @@ export const CS = {
 };
 const FONT = 'Montserrat';
 
+export type Kill = {killer: string; victim: string; mine: boolean; hs?: boolean; at?: number};
+
 export type ChatLine = {name: string; text: string; team?: boolean; color?: string; typed?: number};
 
 export type GameProps = {
@@ -16,6 +18,8 @@ export type GameProps = {
   muzzle?: number; // 0..1 вспышка выстрела врага
   dead?: number; // 0..1 смерть (серый экран)
   killfeed?: boolean;
+  kills?: Kill[]; // свой килфид (вместо стандартного «Enemy → Андрей»)
+  blur?: number; // 0..1 «картинка плывёт»
   chat?: ChatLine[];
   bob?: number; // покачивание оружия, кадры
   hp?: number;
@@ -108,7 +112,7 @@ const World: React.FC<{peek: number; enemy: number; muzzle: number}> = ({peek, e
   );
 };
 
-const Hud: React.FC<{hp: number; score: [number, number]; timer: string; killfeed: boolean; chat: ChatLine[]}> = ({hp, score, timer, killfeed, chat}) => (
+const Hud: React.FC<{hp: number; score: [number, number]; timer: string; killfeed: boolean; kills?: Kill[]; chat: ChatLine[]}> = ({hp, score, timer, killfeed, kills, chat}) => (
   <g>
     {/* счёт и таймер раунда */}
     <g transform="translate(800, 60)">
@@ -128,6 +132,15 @@ const Hud: React.FC<{hp: number; score: [number, number]; timer: string; killfee
       <path d="M70 130 L58 104 L82 104 Z" fill="#fff" opacity={0.35} />
     </g>
     {/* килфид */}
+    {kills && kills.map((k, i) => (
+      <g key={i} transform={`translate(1360, ${120 + i * 62})`} opacity={k.at === undefined ? 1 : Math.min(1, k.at)}>
+        <rect x={-470} y={-34} width={470} height={52} rx={6} fill={k.mine ? 'rgba(8,20,10,0.8)' : 'rgba(20,8,8,0.8)'} stroke={k.mine ? '#e9e9e9' : CS.red} strokeWidth={3} />
+        <T x={-450} y={2} s={28} c={CS.ct}>{k.killer}</T>
+        <path d="M-300 -14 L-210 -14 L-210 -4 L-240 -4 L-248 10 L-262 10 L-256 -4 L-300 -4 Z" fill="#fff" />
+        {k.hs && <><circle cx={-178} cy={-8} r={12} fill="none" stroke="#fff" strokeWidth={4} /><circle cx={-178} cy={-8} r={3} fill="#fff" /></>}
+        <T x={-20} y={2} s={28} c={CS.t} a="end">{k.victim}</T>
+      </g>
+    ))}
     {killfeed && (
       <g transform="translate(1360, 120)">
         <rect x={-470} y={-34} width={470} height={52} rx={6} fill="rgba(20,8,8,0.8)" stroke={CS.red} strokeWidth={3} />
@@ -178,13 +191,24 @@ const Crosshair = () => (
   </g>
 );
 
-export const GameView: React.FC<GameProps> = ({peek = 0, enemy = 0, muzzle = 0, dead = 0, killfeed = false, chat = [], bob = 0, hp = 100, score = [3, 7], timer = '1:42'}) => (
+export const GameView: React.FC<GameProps> = ({peek = 0, enemy = 0, muzzle = 0, dead = 0, killfeed = false, kills, blur = 0, chat = [], bob = 0, hp = 100, score = [3, 7], timer = '1:42'}) => (
   <g>
+    {blur > 0 && (
+      <defs>
+        <filter id="cs-blur" x="-5%" y="-5%" width="110%" height="110%">
+          <feGaussianBlur stdDeviation={blur * 9} result="b" />
+          <feOffset in="b" dx={blur * 26} dy={0} result="o" />
+          <feBlend in="b" in2="o" mode="lighten" />
+        </filter>
+      </defs>
+    )}
+    <g filter={blur > 0 ? 'url(#cs-blur)' : undefined}>
     <World peek={peek} enemy={enemy} muzzle={muzzle} />
     {dead < 0.5 && <AK bob={bob} />}
     {dead < 0.5 && <Crosshair />}
     {dead > 0 && <rect width={1600} height={900} fill="#808080" opacity={dead} style={{mixBlendMode: 'saturation'}} />}
     {dead > 0 && <rect width={1600} height={900} fill="#000" opacity={dead * 0.35} />}
+    </g>
     {dead > 0 && (
       <g opacity={dead}>
         <rect width={1600} height={900} fill="url(#cs-dead)" />
@@ -197,7 +221,7 @@ export const GameView: React.FC<GameProps> = ({peek = 0, enemy = 0, muzzle = 0, 
         <T x={800} y={330} s={64} a="middle" c="#fff" ls={4}>ВЫ УБИТЫ</T>
       </g>
     )}
-    <Hud hp={dead > 0.5 ? 0 : hp} score={score} timer={timer} killfeed={killfeed} chat={chat} />
+    <Hud hp={dead > 0.5 ? 0 : hp} score={score} timer={timer} killfeed={killfeed} kills={kills} chat={chat} />
   </g>
 );
 
@@ -208,9 +232,10 @@ export type MenuProps = {
   accepted?: number; // 0..1 нажата «Принять»
   cursor?: [number, number];
   click?: number; // 0..1 импульс клика
+  rating?: [string, string];
 };
 
-export const MenuView: React.FC<MenuProps> = ({searching = -1, hover = 0, found = 0, accepted = 0, cursor, click = 0}) => (
+export const MenuView: React.FC<MenuProps> = ({searching = -1, hover = 0, found = 0, accepted = 0, cursor, click = 0, rating = ['ELO 1 800', '▼ 75']}) => (
   <g>
     <defs>
       <radialGradient id="cs-menu" cx="0.7" cy="0.35" r="0.9">
@@ -242,8 +267,8 @@ export const MenuView: React.FC<MenuProps> = ({searching = -1, hover = 0, found 
       <T x={30} y={60} s={34} c={CS.t}>PREMIER</T>
       <T x={30} y={110} s={24} c="#9aa4b6" w={600}>Рейтинговый режим</T>
       <rect x={30} y={150} width={400} height={64} rx={10} fill="rgba(255,255,255,0.06)" />
-      <T x={50} y={195} s={34}>ELO 1 800</T>
-      <T x={410} y={195} s={30} c={CS.red} a="end">▼ 75</T>
+      <T x={50} y={195} s={34}>{rating[0]}</T>
+      <T x={410} y={195} s={30} c={rating[1].startsWith('▼') ? CS.red : CS.green} a="end">{rating[1]}</T>
     </g>
     {/* кнопка поиска */}
     <g transform="translate(900, 640)">
@@ -288,7 +313,7 @@ export const DefeatView: React.FC<{appear?: number; score?: [number, number]; el
 
 export type ScreenMode = 'game' | 'menu' | 'defeat' | 'off';
 
-export const CSScreen: React.FC<{mode: ScreenMode; game?: GameProps; menu?: MenuProps; defeat?: {appear?: number; score?: [number, number]; elo?: number}; tint?: number; power?: number}> = ({mode, game, menu, defeat, tint = 0, power = 1}) => (
+export const CSScreen: React.FC<{mode: ScreenMode; game?: GameProps; menu?: MenuProps; defeat?: {appear?: number; score?: [number, number]; elo?: number}; tint?: number; power?: number; kick?: number}> = ({mode, game, menu, defeat, tint = 0, power = 1, kick = 0}) => (
   <g>
     <rect width={1600} height={900} fill="#000" />
     <g opacity={power}>
@@ -297,5 +322,19 @@ export const CSScreen: React.FC<{mode: ScreenMode; game?: GameProps; menu?: Menu
       {mode === 'defeat' && <DefeatView {...defeat} />}
     </g>
     {tint > 0 && <rect width={1600} height={900} fill="#ff1a1a" opacity={tint * 0.35} style={{mixBlendMode: 'multiply'}} />}
+    {kick > 0 && (
+      <g opacity={Math.min(1, kick * 2)}>
+        <rect width={1600} height={900} fill="rgba(0,0,0,0.65)" />
+        <g transform={`translate(800, 450) scale(${0.85 + 0.15 * kick})`}>
+          <rect x={-560} y={-230} width={1120} height={460} rx={18} fill="#161b22" stroke={CS.red} strokeWidth={6} />
+          <rect x={-560} y={-230} width={1120} height={90} rx={18} fill={CS.red} />
+          <T x={0} y={-168} s={42} a="middle" c="#fff">COUNTER-STRIKE 2</T>
+          <T x={0} y={-30} s={60} a="middle" c="#fff">ВЫ ИСКЛЮЧЕНЫ</T>
+          <T x={0} y={50} s={60} a="middle" c="#fff">ЗА БЕЗДЕЙСТВИЕ</T>
+          <rect x={-140} y={110} width={280} height={80} rx={12} fill="#2a3240" />
+          <T x={0} y={163} s={38} a="middle">OK</T>
+        </g>
+      </g>
+    )}
   </g>
 );

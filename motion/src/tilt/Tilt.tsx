@@ -32,10 +32,10 @@ const S = {
   end: fr(END_AT),
 };
 
-const ramp = (f: number, from: number, to: number) => interpolate(f, [from, to], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
+export const ramp = (f: number, from: number, to: number) => interpolate(f, [from, to], [0, 1], {...clamp, easing: Easing.inOut(Easing.cubic)});
 
 // сцена с плавным входом: появляется поверх предыдущей, слегка «наезжая»
-const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom?: number}> = ({from, to, children, zoom = 0.05}) => {
+export const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom?: number}> = ({from, to, children, zoom = 0.05}) => {
   const f = useCurrentFrame();
   if (f < from || f >= to + 8) return null;
   const t = ramp(f, from, from + 8);
@@ -43,25 +43,25 @@ const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom
 };
 
 // камера: масштаб вокруг точки (в координатах картинки)
-const Cam: React.FC<{s: number; x?: number; y?: number; tx?: number; ty?: number; shake?: number; children: React.ReactNode}> = ({s, x = W / 2, y = H / 2, tx = 0, ty = 0, shake = 0, children}) => {
+export const Cam: React.FC<{s: number; x?: number; y?: number; tx?: number; ty?: number; shake?: number; children: React.ReactNode}> = ({s, x = W / 2, y = H / 2, tx = 0, ty = 0, shake = 0, children}) => {
   const f = useCurrentFrame();
   const dx = shake ? Math.sin(f * 1.7) * shake * 10 : 0;
   const dy = shake ? Math.cos(f * 2.3) * shake * 8 : 0;
   return <AbsoluteFill style={{transformOrigin: `${x}px ${y}px`, transform: `translate(${dx + tx}px, ${dy + ty}px) scale(${s})`}}>{children}</AbsoluteFill>;
 };
 
-const RedFlash: React.FC<{at: number; len?: number}> = ({at, len = 14}) => {
+export const RedFlash: React.FC<{at: number; len?: number}> = ({at, len = 14}) => {
   const f = useCurrentFrame();
   if (f < at || f > at + len) return null;
   return <AbsoluteFill style={{height: H, background: 'radial-gradient(ellipse at center, rgba(255,40,60,0.15), rgba(255,20,40,0.55))', opacity: 1 - (f - at) / len}} />;
 };
 
-const Grid: React.FC = () => (
+export const Grid: React.FC = () => (
   <AbsoluteFill style={{height: H, background: '#0c1226', backgroundImage: 'radial-gradient(rgba(120,150,230,0.18) 2px, transparent 2px)', backgroundSize: '44px 44px'}} />
 );
 
 // значок поражения «L»
-const LCard: React.FC<{x: number; y: number; s: number; size?: number}> = ({x, y, s, size = 96}) => (
+export const LCard: React.FC<{x: number; y: number; s: number; size?: number}> = ({x, y, s, size = 96}) => (
   <div style={{position: 'absolute', left: x, top: y, width: size, height: size, transform: `translate(-50%, -50%) scale(${s}) rotate(${(1 - s) * -20}deg)`,
     background: '#d9283a', borderRadius: 14, color: '#fff', fontFamily: 'Montserrat', fontWeight: 900, fontSize: size * 0.62, display: 'flex',
     alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(255,40,60,0.6), 0 8px 18px rgba(0,0,0,0.5)', opacity: Math.min(1, s * 2)}}>L</div>
@@ -338,7 +338,7 @@ const Rule1: React.FC = () => {
   );
 };
 
-const IconBubble: React.FC<{x: number; y: number; s: number; label: string; children: React.ReactNode}> = ({x, y, s, label, children}) => (
+export const IconBubble: React.FC<{x: number; y: number; s: number; label: string; children: React.ReactNode}> = ({x, y, s, label, children}) => (
   <div style={{position: 'absolute', left: x, top: y, transform: `translate(-50%, -50%) scale(${s})`, opacity: Math.min(1, s * 2), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8}}>
     <div style={{width: 150, height: 150, borderRadius: 75, background: 'rgba(12,16,32,0.92)', border: '4px solid #ffd23f', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{children}</div>
     <div style={{fontFamily: 'Montserrat', fontWeight: 900, fontSize: 30, color: '#fff', textShadow: '0 3px 0 #000'}}>{label}</div>

@@ -23,12 +23,16 @@ export type RoomProps = {
   lean?: number; // 0..1 наклон к монитору
   stand?: number; // 0..1 встал из-за стола
   click?: number; // импульс клика мышью
+  kick?: number; // окно «исключены за бездействие»
+  daylight?: number; // 0 — ночь, 1 — день за окном
+  bottle?: number; // 0..1 бутылка воды у монитора
+  bottleLevel?: number; // 0..1 сколько воды
   f: number;
 };
 
 const glowColor = (mode: ScreenMode, tint: number) => (tint > 0.5 || mode === 'defeat' ? P.glowRed : mode === 'menu' ? '#ffb070' : P.glowGame);
 
-export const Room: React.FC<RoomProps> = ({mode, game, menu, defeat, clock = '02:00', clockGlow = 0, lamp = 1, power = 1, tint = 0, lean = 0, stand = 0, click = 0, f}) => {
+export const Room: React.FC<RoomProps> = ({mode, game, menu, defeat, clock = '02:00', clockGlow = 0, lamp = 1, power = 1, tint = 0, lean = 0, stand = 0, click = 0, kick = 0, daylight = 0, bottle = 0, bottleLevel = 1, f}) => {
   const g = glowColor(mode, tint);
   const flick = 0.9 + 0.1 * Math.sin(f / 7) * Math.sin(f / 13);
   const headY = 690 + lean * 30 - stand * 330;
@@ -54,10 +58,13 @@ export const Room: React.FC<RoomProps> = ({mode, game, menu, defeat, clock = '02
         </linearGradient>
       </defs>
       <rect width={W} height={H} fill="url(#r-wall)" />
+      {daylight > 0 && <rect width={W} height={H} fill="#4a6aa8" opacity={daylight * 0.35} />}
       {/* окно с ночным городом */}
       <g transform="translate(880, 120)">
         <rect width={180} height={330} fill="#0a1430" stroke={P.line} strokeWidth={8} />
         <circle cx={130} cy={60} r={20} fill="#dfe6ff" opacity={0.85} />
+        {daylight > 0 && <rect width={180} height={330} fill="#86bdea" opacity={daylight} />}
+        {daylight > 0 && <circle cx={60} cy={70} r={28} fill="#ffe08a" opacity={daylight} />}
         {[[0, 220, 40], [38, 180, 30], [70, 240, 34], [106, 200, 40], [146, 230, 34]].map(([x, y, w], i) => (
           <g key={i}>
             <rect x={x} y={y} width={w} height={330 - y} fill="#060b1c" />
@@ -88,10 +95,18 @@ export const Room: React.FC<RoomProps> = ({mode, game, menu, defeat, clock = '02
       {/* монитор */}
       <rect x={MON.x - 16} y={MON.y - 16} width={MON.w + 32} height={MON.h + 32} rx={14} fill="#0a0d16" stroke="#2a3350" strokeWidth={4} />
       <svg x={MON.x} y={MON.y} width={MON.w} height={MON.h} viewBox="0 0 1600 900">
-        <CSScreen mode={mode} game={game} menu={menu} defeat={defeat} tint={tint} power={power} />
+        <CSScreen mode={mode} game={game} menu={menu} defeat={defeat} tint={tint} power={power} kick={kick} />
       </svg>
       <rect x={MON.x + MON.w / 2 - 30} y={MON.y + MON.h + 16} width={60} height={56} fill="#141a2a" />
       <rect x={MON.x + MON.w / 2 - 110} y={792} width={220} height={14} rx={6} fill="#141a2a" />
+      {/* бутылка воды */}
+      {bottle > 0 && (
+        <g transform={`translate(925, ${800 - bottle * 10})`} opacity={Math.min(1, bottle * 2)}>
+          <rect x={-26} y={-150} width={52} height={150} rx={14} fill="rgba(160,210,255,0.18)" stroke="#9fd0ff" strokeWidth={4} />
+          <rect x={-22} y={-146 + 140 * (1 - bottleLevel)} width={44} height={140 * bottleLevel} rx={10} fill="#4aa8ff" opacity={0.75} />
+          <rect x={-14} y={-176} width={28} height={28} rx={6} fill="#2a7de1" />
+        </g>
+      )}
       {/* мышь */}
       <g transform={`translate(${stand > 0.3 ? 860 : 830}, ${812 + click * 3})`}>
         <ellipse rx={30} ry={18} fill="#0e121c" stroke={click > 0 ? '#ff4d5a' : '#3a4568'} strokeWidth={3} />

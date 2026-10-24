@@ -1,15 +1,15 @@
 // Субтитры (караоке: слова загораются по мере озвучки), стикеры-скотч, красные плашки, пульс-кольца.
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {CUES} from './script';
+import {CUES, Cue} from './script';
 
 export const COL = {w: '#ffffff', y: '#ffd23f', r: '#ff3b47', dim: '#5b6380', paper: '#ece4cf', ink: '#14161c'};
 export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
-export const Captions: React.FC = () => {
+export const Captions: React.FC<{cues?: Cue[]}> = ({cues = CUES}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const cue = CUES.find((c) => f >= c.at && f < c.end);
+  const cue = cues.find((c) => f >= c.at && f < c.end);
   if (!cue) return null;
   const inS = spring({frame: f - cue.at, fps, config: {damping: 16, stiffness: 300, mass: 0.5}});
   const out = interpolate(f, [cue.end - 4, cue.end], [1, 0], clamp);

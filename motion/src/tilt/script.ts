@@ -11,7 +11,7 @@ export const VO = [
 export const END_AT = 79.6; // карточка «часть 2»
 export const TOTAL = 83.2;
 
-type W = [string, number, number];
+export type W = [string, number, number];
 const WORDS = words as W[][];
 
 // время слова (секунды на общей шкале): файл 1..3, индекс слова в распознавании
@@ -94,10 +94,12 @@ const CHUNKS: [number, string][] = [
 export type Word = {text: string; color: 'w' | 'y' | 'r'; at: number};
 export type Cue = {at: number; end: number; words: Word[]};
 
-const build = (): Cue[] => {
-  const pos = [0, 0, 0];
+// общий сборщик субтитров: слова распознавания + разбивка CHUNKS (используется и другими роликами)
+export const buildCues = (words: W[][], vo: {at: number}[], chunks: [number, string][], endAt: number): Cue[] => {
+  const pos = words.map(() => 0);
   const cues: Cue[] = [];
-  for (const [file, text] of CHUNKS) {
+  const spokenEnd: number[] = [];
+  for (const [file, text] of chunks) {
     const ws: Word[] = [];
     for (let tok of text.split(' ')) {
       if (tok === '—') { ws[ws.length - 1].text += ' —'; continue; }
@@ -106,19 +108,17 @@ const build = (): Cue[] => {
       if (m) { n = +m[1]; tok = tok.slice(0, -2); }
       const color = tok[0] === '*' ? 'y' : tok[0] === '!' ? 'r' : 'w';
       if (color !== 'w') tok = tok.slice(1);
-      ws.push({text: tok, color, at: fr(w(file, pos[file - 1]))});
+      ws.push({text: tok, color, at: fr(vo[file - 1].at + words[file - 1][pos[file - 1]][1])});
       pos[file - 1] += n;
     }
     cues.push({at: ws[0].at, end: 0, words: ws});
+    spokenEnd.push(vo[file - 1].at + words[file - 1][pos[file - 1] - 1][2]);
   }
   // реплика держится до следующей, но не дольше 0,6 с после конца последнего слова
   for (let i = 0; i < cues.length; i++) {
-    const next = i + 1 < cues.length ? cues[i + 1].at : fr(END_AT);
-    const [file] = CHUNKS[i];
-    const lastIdx = (() => { let p = 0; for (let k = 0; k <= i; k++) if (CHUNKS[k][0] === file) p += CHUNKS[k][1].split(' ').reduce((s, t) => s + (t === '—' ? 0 : t.match(/\^(\d)$/) ? +t.slice(-1) : 1), 0); return p - 1; })();
-    const spoken = VO[file - 1].at + WORDS[file - 1][lastIdx][2];
-    cues[i].end = Math.min(next, fr(spoken + 0.6));
+    const next = i + 1 < cues.length ? cues[i + 1].at : fr(endAt);
+    cues[i].end = Math.min(next, fr(spokenEnd[i] + 0.6));
   }
   return cues;
 };
-export const CUES = build();
+export const CUES = buildCues(WORDS, VO, CHUNKS, END_AT);
