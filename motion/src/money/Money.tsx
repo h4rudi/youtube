@@ -62,7 +62,7 @@ const S = {
 };
 
 // сцена: плавный вход поверх предыдущей; kind='cut' — жёсткая склейка с толчком
-const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom?: number; cut?: boolean}> = ({from, to, children, zoom = 0.06, cut = false}) => {
+export const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom?: number; cut?: boolean}> = ({from, to, children, zoom = 0.06, cut = false}) => {
   const f = useCurrentFrame();
   if (f < from || f >= to + (cut ? 0 : 8)) return null;
   const t = cut ? 1 : ramp(f, from, from + 8);
@@ -70,14 +70,14 @@ const Scene: React.FC<{from: number; to: number; children: React.ReactNode; zoom
   return <AbsoluteFill style={{height: H, overflow: 'hidden', opacity: t, transform: `scale(${1 + kick})`}}>{children}</AbsoluteFill>;
 };
 
-const Cam: React.FC<{s: number; x?: number; y?: number; shake?: number; children: React.ReactNode}> = ({s, x = W / 2, y = H / 2, shake = 0, children}) => {
+export const Cam: React.FC<{s: number; x?: number; y?: number; shake?: number; children: React.ReactNode}> = ({s, x = W / 2, y = H / 2, shake = 0, children}) => {
   const f = useCurrentFrame();
   const dx = shake ? Math.sin(f * 1.7) * shake * 12 : 0;
   const dy = shake ? Math.cos(f * 2.3) * shake * 10 : 0;
   return <AbsoluteFill style={{transformOrigin: `${x}px ${y}px`, transform: `translate(${dx}px, ${dy}px) scale(${s})`}}>{children}</AbsoluteFill>;
 };
 
-const Flash: React.FC<{at: number; len?: number; color?: string}> = ({at, len = 12, color = 'rgba(255,40,55,0.5)'}) => {
+export const Flash: React.FC<{at: number; len?: number; color?: string}> = ({at, len = 12, color = 'rgba(255,40,55,0.5)'}) => {
   const f = useCurrentFrame();
   if (f < at || f > at + len) return null;
   return <AbsoluteFill style={{height: H, background: color, opacity: 1 - (f - at) / len}} />;
