@@ -14,6 +14,7 @@ import {IntroV8, V8_FRAMES} from './IntroV8';
 import {Tilt, TILT_FRAMES} from './tilt/Tilt';
 import {Body8, BODY_FRAMES} from './body/Body8';
 import {LyokhaSheet} from './money/Lyokha';
+import {Money, MONEY_FRAMES} from './money/Money';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -32,6 +33,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Money" component={Money} durationInFrames={MONEY_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="LyokhaSheet" component={LyokhaSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="Body8" component={Body8} durationInFrames={BODY_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Tilt" component={Tilt} durationInFrames={TILT_FRAMES} fps={30} width={1080} height={1920} />
