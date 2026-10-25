@@ -11,7 +11,6 @@ import {ramp} from '../tilt/Tilt';
 import {Scene, Cam, Flash} from '../money/Money';
 import {H, RED} from '../money/Props';
 import {Voice} from '../clutch/Clutch';
-import {CSScreen} from '../tilt/CSScreen';
 
 export const ZYWOO_FRAMES = fr(TOTAL);
 
@@ -69,7 +68,7 @@ const TopHud: React.FC<{f: number; aliveT: number; y?: number; timer?: string}> 
     {[0, 1, 2, 3].map((i) => <Ava key={i} c={T} dead={i >= aliveT ? 1 : 0} size={78} />)}
     <div style={{width: 190, height: 100, background: 'rgba(30,34,44,0.95)', borderRadius: 8, margin: '0 6px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Russo One'}}>
       <div style={{fontSize: 40, color: '#fff'}}>{timer}</div>
-      <div style={{fontSize: 30}}><span style={{color: T}}>12</span><span style={{color: '#777'}}> : </span><span style={{color: CT}}>12</span></div>
+      <div style={{fontSize: 30}}><span style={{color: T}}>12</span><span style={{color: '#777'}}> : </span><span style={{color: CT}}>11</span></div>
     </div>
     {[0, 1, 2, 3].map((i) => <Ava key={i} c={CT} dead={1} size={78} />)}
     <Ava c={CT} star size={78} />
@@ -162,7 +161,10 @@ const Hook: React.FC = () => {
     <>
       <AbsoluteFill style={{height: H, background: 'radial-gradient(ellipse at 50% 55%, #5a0d14, #07080b 70%)'}} />
       <Cam s={interpolate(f, [0, S.score], [1.0, 1.15], clamp)} y={760} shake={shake}>
-        <div style={{position: 'absolute', left: 540, top: 760, transform: 'translate(-50%, -50%)'}}><Silhouette w={640} /></div>
+        <div style={{position: 'absolute', left: 540, top: 820, width: 760, height: 792, transform: 'translate(-50%, -50%)'}}>
+          <Img src={staticFile('zywoo/zywoo.png')} style={{width: 760, height: 792, filter: `drop-shadow(0 0 18px ${GOLD}aa) drop-shadow(0 0 50px rgba(255,40,60,0.45))`}} />
+          <div style={{position: 'absolute', left: -40, right: -40, bottom: -10, height: 420, background: 'linear-gradient(rgba(7,8,11,0), #07080b 75%)'}} />
+        </div>
       </Cam>
       <Big x={540} y={190} s={pop(f, 2, fps)} size={64} color="#fff">ЗАПОМНИ</Big>
       {never && <Big x={540} y={320} s={pop(f, v(1), fps, 320, 9)} size={150} color={RED}>НИКОГДА</Big>}
@@ -262,13 +264,65 @@ const RadarScene: React.FC = () => {
       <TopHud f={f} aliveT={aliveT} y={60} timer={f >= v(58) ? `0:${String(t).padStart(2, '0')}` : '0:40'} />
       <Radar f={f} youGlow={f >= v(80) ? 1 : 0} />
       <div style={{position: 'absolute', right: 40, top: 270, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10}}>
-        {KILLS.map((k, i) => (f >= k ? <KillRow key={i} victim={VICTIMS[i]} awp={i === 2} a={(f - k) / 8} /> : null))}
+        {KILLS.map((k, i) => (f >= k ? <KillRow key={i} victim={VICTIMS[i]} awp a={(f - k) / 8} /> : null))}
       </div>
       {f >= v(56) && f < v(65) && <Chip x={540} y={1060} s={pop(f, v(56), fps)} bg={RED} size={44}>БОМБА СТОИТ · 0:30</Chip>}
       {f >= v(65) && f < KILLS[0] && <Chip x={540} y={1060} s={pop(f, v(65), fps, 300, 10)} bg="#1c2030" size={44}>ШАГИ…</Chip>}
       {KILLS.map((k, i) => (f >= k && f < k + 24 ? <Big key={i} x={540} y={1060} s={pop(f, k, fps, 300, 9)} size={80} color={RED}>−{i + 1}</Big> : null))}
       <AbsoluteFill style={{height: H, background: 'rgba(30,60,160,0.12)', mixBlendMode: 'screen'}} />
     </>
+  );
+};
+
+// вид от первого лица «остался ты»: сидишь за ящиком на плэнте, впереди тёмный проём, рядом мигает бомба
+const PlantPov: React.FC<{f: number; breath: number}> = ({f, breath}) => {
+  const blink = (f % 20) < 10;
+  const sway = Math.sin(f / 18) * 6, bob = breath * 6;
+  return (
+    <svg width={1004} height={558} viewBox="0 0 1600 900">
+      <defs>
+        <linearGradient id="pp-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3a2a24" /><stop offset="1" stopColor="#1a1210" /></linearGradient>
+        <radialGradient id="pp-door" cx="0.5" cy="0.6" r="0.6"><stop offset="0" stopColor="#000" /><stop offset="1" stopColor="#120a0a" /></radialGradient>
+        <radialGradient id="pp-bomb" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stopColor="#ff3b47" stopOpacity={blink ? 0.7 : 0.15} /><stop offset="1" stopColor="#ff3b47" stopOpacity={0} /></radialGradient>
+      </defs>
+      <g transform={`translate(${sway}, ${bob})`}>
+        {/* стены и пол в перспективе */}
+        <rect width={1600} height={900} fill="#24181a" />
+        <polygon points="0,0 560,250 560,560 0,900" fill="#2e1f20" />
+        <polygon points="1600,0 1040,250 1040,560 1600,900" fill="#271a1b" />
+        <polygon points="0,900 560,560 1040,560 1600,900" fill="url(#pp-floor)" />
+        {[0.25, 0.5, 0.75].map((k) => <line key={k} x1={560 - 560 * k} y1={560 + 340 * k} x2={1040 + 560 * k} y2={560 + 340 * k} stroke="#000" strokeWidth={3} opacity={0.35} />)}
+        <rect x={560} y={250} width={480} height={310} fill="#352426" />
+        {/* дверной проём, откуда он придёт */}
+        <rect x={720} y={300} width={170} height={260} fill="url(#pp-door)" stroke="#110a0a" strokeWidth={8} />
+        <rect x={790 + Math.sin(f / 9) * 30} y={330} width={30} height={200} fill="#000" opacity={0.35 + 0.25 * Math.sin(f / 5)} />
+        {/* бочки и ящики на плэнте */}
+        <rect x={1080} y={430} width={170} height={190} fill="#4a3426" stroke="#2a1c14" strokeWidth={6} />
+        <path d="M1080 430 L1250 620 M1250 430 L1080 620" stroke="#2a1c14" strokeWidth={6} />
+        <ellipse cx={420} cy={600} rx={70} ry={20} fill="#2a1c14" /><rect x={350} y={470} width={140} height={130} fill="#3a2a22" /><ellipse cx={420} cy={470} rx={70} ry={20} fill="#4a3628" />
+        {/* бомба на полу */}
+        <ellipse cx={980} cy={700} rx={160} ry={60} fill="url(#pp-bomb)" />
+        <rect x={920} y={670} width={120} height={50} rx={8} fill="#1a1a1a" stroke="#555" strokeWidth={4} />
+        <rect x={950} y={680} width={44} height={22} fill={blink ? '#ff3b47' : '#5a1a1a'} />
+        {/* край ящика, за которым ты сидишь */}
+        <polygon points="0,560 380,600 380,900 0,900" fill="#3b2a1e" stroke="#1d140e" strokeWidth={8} />
+        <path d="M0 640 L380 670 M0 760 L380 780" stroke="#1d140e" strokeWidth={8} />
+        {/* прицел */}
+        <g transform={`translate(${800 + sway * 0.4}, ${450 + bob * 0.4})`} stroke="#4cff6a" strokeWidth={4}>
+          <line x1={0} y1={-24} x2={0} y2={-8} /><line x1={0} y1={8} x2={0} y2={24} /><line x1={-24} y1={0} x2={-8} y2={0} /><line x1={8} y1={0} x2={24} y2={0} />
+        </g>
+      </g>
+      {/* AK от первого лица */}
+      <g transform={`translate(${1060 + sway * 1.4}, ${640 + bob * 1.6}) rotate(22)`}>
+        <rect x={0} y={-8} width={300} height={16} rx={5} fill="#1c1c20" />
+        <path d="M280 -22 L470 -26 L478 24 L280 20 Z" fill="#6a4628" />
+        <path d="M470 -34 L720 -34 L730 32 L470 30 Z" fill="#202024" />
+        <path d="M540 28 C545 120 515 190 478 248 L548 276 C596 206 618 120 612 28 Z" fill="#5c3418" />
+        <path d="M720 -30 L1060 -10 L1080 110 L990 120 L726 30 Z" fill="#6a4628" />
+        <path d="M330 -40 C390 -60 440 -40 450 0 C455 40 410 70 350 60 C310 50 300 -20 330 -40 Z" fill="#141820" />
+      </g>
+      <rect width={1600} height={900} fill="#ff1a1a" opacity={0.18 + breath * 0.06} style={{mixBlendMode: 'multiply'}} />
+    </svg>
   );
 };
 
@@ -280,7 +334,7 @@ const Alone: React.FC = () => {
     <>
       <AbsoluteFill style={{height: H, background: '#07080b'}} />
       <div style={{position: 'absolute', left: 30, top: 240, width: 1020, height: 574, border: '8px solid #2a2d36', borderRadius: 22, overflow: 'hidden', transform: `scale(${1 + breath * 0.015})`}}>
-        <svg width={1004} height={558} viewBox="0 0 1600 900"><CSScreen mode="game" game={{bob: f * 0.5, peek: 0, enemy: 0, score: [12, 12], timer: '0:14'}} tint={0.9} /></svg>
+        <PlantPov f={f} breath={breath} />
         <div style={{position: 'absolute', inset: 0, background: `radial-gradient(circle at 50% 50%, transparent 35%, rgba(60,0,0,${0.6 + breath * 0.2}))`}} />
       </div>
       <Chip x={540} y={170} s={pop(f, v(82), fps)} bg={RED} size={48}>ОСТАЛСЯ ТЫ</Chip>
