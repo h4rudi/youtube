@@ -126,7 +126,7 @@ const Ecg: React.FC<{f: number; bpm: number; y: number}> = ({f, bpm, y}) => {
 };
 
 // голосовой канал: тиммейты орут, потом «звук отключён мозгом»
-const Voice: React.FC<{f: number; mute: number; loud?: number; y?: number}> = ({f, mute, loud = 1, y = 300}) => (
+export const Voice: React.FC<{f: number; mute: number; loud?: number; y?: number}> = ({f, mute, loud = 1, y = 300}) => (
   <div style={{position: 'absolute', left: 90, top: y, width: 900, background: '#2b2d31', borderRadius: 24, padding: 26, boxSizing: 'border-box', fontFamily: 'Montserrat', boxShadow: '0 30px 60px rgba(0,0,0,0.5)'}}>
     <div style={{fontSize: 26, fontWeight: 900, color: '#949ba4', marginBottom: 14}}>🔊 ГОЛОСОВОЙ · КЛАТЧ</div>
     {['Санёк', 'Димон', 'kirill', 'Макс'].map((n, i) => {
