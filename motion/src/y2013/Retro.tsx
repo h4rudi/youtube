@@ -1,7 +1,7 @@
 // Реквизит ролика «Проснулся в 2013 году»: керамбит (ножи образца 2013, без бабочки — она вышла позже),
 // ЭЛТ-монитор, меню CS:GO 2013, торговая площадка, голо-наклейки, настенный календарь, мессенджер, вид из окна.
 import React from 'react';
-import {random, staticFile} from 'remotion';
+import {random, staticFile, Img} from 'remotion';
 import {LyokhaBust, L} from '../money/Lyokha';
 
 const INK = '#15131a';
@@ -93,16 +93,15 @@ export const ShawarmaIcon: React.FC<{s?: number}> = ({s = 1}) => (
   </svg>
 );
 
-// ---------------------------------------------------------------- голо-наклейка «Катовице 2014» (без логотипов команд)
-export const Sticker: React.FC<{hue: number; s?: number; f: number; label?: string}> = ({hue, s = 1, f, label = 'KATOWICE'}) => {
-  const sh = (f * 3 + hue) % 360;
+// ---------------------------------------------------------------- голо-наклейка Катовице 2014 (исходник пользователя) + бегущий голо-блик
+export const Sticker: React.FC<{hue: number; s?: number; f: number; label?: string}> = ({hue, s = 1, f}) => {
+  const w = 190 * s, h = w * (599 / 608);
+  const sweep = ((f * 2.2 + hue) % 160) - 30;
   return (
-    <div style={{width: 170 * s, height: 170 * s, borderRadius: '50%', border: `${6 * s}px solid #fff`, boxShadow: `0 10px 20px rgba(0,0,0,0.5), 0 0 ${18 * s}px hsla(${sh},90%,65%,0.6)`,
-      background: `conic-gradient(from ${sh}deg, hsl(${hue},90%,60%), hsl(${hue + 60},90%,65%), hsl(${hue + 140},90%,60%), hsl(${hue + 220},90%,65%), hsl(${hue},90%,60%))`,
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Montserrat', fontWeight: 900, color: '#fff', textShadow: '0 2px 0 rgba(0,0,0,0.5)'}}>
-      <div style={{fontSize: 22 * s, letterSpacing: 1}}>{label}</div>
-      <div style={{fontSize: 40 * s, lineHeight: 1}}>2014</div>
-      <div style={{fontSize: 14 * s, marginTop: 4 * s, background: 'rgba(0,0,0,0.35)', padding: `${2 * s}px ${8 * s}px`, borderRadius: 8}}>HOLO</div>
+    <div style={{position: 'relative', width: w, height: h, filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.55))'}}>
+      <Img src={staticFile('y2013/sticker_titan.png')} style={{width: w, height: h, display: 'block'}} />
+      <div style={{position: 'absolute', inset: 0, WebkitMaskImage: `url(${staticFile('y2013/sticker_titan.png')})`, WebkitMaskSize: '100% 100%',
+        background: `linear-gradient(115deg, transparent ${sweep}%, rgba(255,255,255,0.55) ${sweep + 8}%, rgba(140,220,255,0.35) ${sweep + 14}%, transparent ${sweep + 24}%)`, mixBlendMode: 'screen'}} />
     </div>
   );
 };
