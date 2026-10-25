@@ -21,6 +21,7 @@ import {Brain10, BRAIN10_FRAMES} from './brain10/Brain10';
 import {Clutch, CLUTCH_FRAMES} from './clutch/Clutch';
 import {Death1k, DEATH1K_FRAMES} from './death1k/Death1k';
 import {Acc, ACC_FRAMES} from './acc/Acc';
+import {Sleep, SLEEP_FRAMES} from './sleep/Sleep';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -39,6 +40,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Sleep" component={Sleep} durationInFrames={SLEEP_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Acc" component={Acc} durationInFrames={ACC_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Death1k" component={Death1k} durationInFrames={DEATH1K_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Clutch" component={Clutch} durationInFrames={CLUTCH_FRAMES} fps={30} width={1080} height={1920} />
