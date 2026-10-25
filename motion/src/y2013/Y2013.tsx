@@ -38,9 +38,9 @@ const Hook: React.FC = () => {
   const rew = interpolate(f, [0, v(6) + 6], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const year = Math.round(2026 - rew * 13);
   const items: [number, React.ReactNode][] = [
-    [v(12), <Karambit key="k" id="hk1" skin="fade" w={200} glow={GOLD} />],
-    [v(13), <Sticker key="s" hue={300} f={f} s={0.8} />],
-    [v(15), <Karambit key="k2" id="hk2" skin="doppler" w={200} glow="#c13cff" />],
+    [v(12), <Karambit key="b" skin="butterfly" w={190} glow="#2bd96b" />],
+    [v(13), <Karambit key="k" skin="doppler" w={210} glow="#8a5cff" />],
+    [v(15), <Karambit key="k2" skin="tiger" w={210} glow={GOLD} />],
   ];
   return (
     <>
@@ -125,7 +125,7 @@ const Skins: React.FC = () => {
 };
 
 // ---------------------------------------------------------------- торговая площадка 2013
-const ROWS: [string, Skin][] = [['Керамбит | Градиент', 'fade'], ['Керамбит | Тигровый зуб', 'tiger'], ['Керамбит | Мраморный градиент', 'marble'], ['Керамбит | Кровавая паутина', 'crimson']];
+const ROWS: [string, Skin][] = [['Керамбит | Градиент', 'fade'], ['Керамбит | Кровавая паутина', 'crimson'], ['StatTrak™ Керамбит | Градиент', 'fade'], ['StatTrak™ Керамбит | Кровавая паутина', 'crimson']];
 const Market: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -171,7 +171,7 @@ const Market: React.FC = () => {
 const Knives: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const skins: Skin[] = ['fade', 'doppler', 'tiger', 'marble', 'crimson', 'slaughter', 'fade', 'doppler', 'tiger', 'marble', 'slaughter'];
+  const skins: Skin[] = ['fade', 'crimson', 'fade', 'crimson', 'fade', 'crimson', 'fade', 'crimson', 'fade', 'crimson', 'fade'];
   const n = Math.round(ramp(f, v(57), v(59) + 6) * skins.length);
   const glove = pop(f, v(60), fps);
   return (

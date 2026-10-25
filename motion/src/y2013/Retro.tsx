@@ -1,35 +1,25 @@
 // Реквизит ролика «Проснулся в 2013 году»: керамбит (ножи образца 2013, без бабочки — она вышла позже),
 // ЭЛТ-монитор, меню CS:GO 2013, торговая площадка, голо-наклейки, настенный календарь, мессенджер, вид из окна.
 import React from 'react';
-import {random} from 'remotion';
+import {random, staticFile} from 'remotion';
 import {LyokhaBust, L} from '../money/Lyokha';
 
 const INK = '#15131a';
 export const W = 1080, H = 1180;
 
-// ---------------------------------------------------------------- керамбит с расцветкой
-export type Skin = 'fade' | 'doppler' | 'tiger' | 'crimson' | 'slaughter' | 'marble';
-const SKINS: Record<Skin, [string, string, string]> = {
-  fade: ['#ffd23f', '#ff5fa2', '#8a5cff'], doppler: ['#1b1036', '#c13cff', '#ff4fa0'], tiger: ['#f2a73b', '#1a1208', '#f2a73b'],
-  crimson: ['#5a0d12', '#d42a2a', '#3a0a0e'], slaughter: ['#ff9aa6', '#c2163a', '#ffd1d6'], marble: ['#3aa0ff', '#ff3a6a', '#ffe14a'],
+// ---------------------------------------------------------------- ножи: реальные иконки из игры (исходники пользователя, public/y2013/*.png)
+// В августе 2013 существовали Градиент и Кровавая паутина; Допплер и Тигровый зуб вышли в 2015 (кейс Chroma), бабочка — в 2014.
+export type Skin = 'fade' | 'crimson' | 'doppler' | 'tiger' | 'butterfly';
+const KNIFE: Record<Skin, [string, number, number]> = {
+  fade: ['y2013/k_fade.png', 467, 329], crimson: ['y2013/k_crimson.png', 467, 329], doppler: ['y2013/k_doppler.png', 467, 329],
+  tiger: ['y2013/k_tiger.png', 467, 329], butterfly: ['y2013/bf_emerald.png', 441, 365],
 };
-export const Karambit: React.FC<{skin?: Skin; w?: number; id: string; glow?: string}> = ({skin = 'fade', w = 220, id, glow}) => {
-  const [a, b, c] = SKINS[skin];
+// <svg><image> работает и в HTML, и внутри SVG
+export const Karambit: React.FC<{skin?: Skin; w?: number; id?: string; glow?: string}> = ({skin = 'fade', w = 220, glow}) => {
+  const [src, iw, ih] = KNIFE[skin];
   return (
-    <svg width={w} height={w * 0.62} viewBox="0 0 220 136" style={{overflow: 'visible', filter: glow ? `drop-shadow(0 0 12px ${glow})` : undefined}}>
-      <defs>
-        <linearGradient id={`kb-${id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={a} /><stop offset="0.5" stopColor={b} /><stop offset="1" stopColor={c} />
-        </linearGradient>
-      </defs>
-      {/* лезвие-коготь */}
-      <path d="M96 70 C70 40 40 20 8 22 C30 30 52 46 66 70 C74 84 82 92 96 92 Z" fill={`url(#kb-${id})`} stroke={INK} strokeWidth={4} strokeLinejoin="round" />
-      {skin === 'tiger' && <path d="M30 28 l10 10 M46 34 l10 12 M60 46 l8 12" stroke="#1a1208" strokeWidth={6} />}
-      {/* рукоять и кольцо */}
-      <path d="M92 70 L170 66 Q182 66 184 78 L186 90 Q186 98 176 98 L94 94 Z" fill="#2a2d36" stroke={INK} strokeWidth={4} />
-      <circle cx={196} cy={86} r={18} fill="none" stroke="#2a2d36" strokeWidth={9} />
-      <circle cx={196} cy={86} r={18} fill="none" stroke={INK} strokeWidth={2} />
-      <path d="M112 76 h50" stroke="#3a3e4a" strokeWidth={5} strokeLinecap="round" />
+    <svg width={w} height={w * (ih / iw)} viewBox={`0 0 ${iw} ${ih}`} style={{overflow: 'visible', filter: glow ? `drop-shadow(0 0 12px ${glow})` : undefined}}>
+      <image href={staticFile(src)} width={iw} height={ih} />
     </svg>
   );
 };
