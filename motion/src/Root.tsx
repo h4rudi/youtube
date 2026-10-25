@@ -17,6 +17,7 @@ import {LyokhaSheet} from './money/Lyokha';
 import {Money, MONEY_FRAMES} from './money/Money';
 import {Cases, CASES_FRAMES} from './cases/Cases';
 import {Y2013, Y2013_FRAMES} from './y2013/Y2013';
+import {Brain10, BRAIN10_FRAMES} from './brain10/Brain10';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -35,6 +36,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Brain10" component={Brain10} durationInFrames={BRAIN10_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Y2013" component={Y2013} durationInFrames={Y2013_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Cases" component={Cases} durationInFrames={CASES_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Money" component={Money} durationInFrames={MONEY_FRAMES} fps={30} width={1080} height={1920} />
