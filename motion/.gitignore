@@ -1,3 +1,5 @@
 node_modules/
 out/intro_v4.mp4
 out/voice_tag_alpha.mov
+public/clips/
+out/clip*
