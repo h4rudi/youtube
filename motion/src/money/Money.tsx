@@ -13,7 +13,7 @@ import {VictoryView, MonitorInsert, Menu} from './Screens';
 export const MONEY_FRAMES = fr(TOTAL);
 
 let caveat = false;
-const loadCaveat = () => {
+export const loadCaveat = () => {
   if (caveat || typeof document === 'undefined') return;
   caveat = true;
   const h = delayRender('caveat');
