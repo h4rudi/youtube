@@ -302,11 +302,14 @@ const HookS: React.FC = () => {
   return (
     <>
       <Bg glow="#3a1a1a" />
-      <Big x={540} y={300} s={pop(f, 2, fps)} size={60} color="#fff">САМАЯ ДОРОГАЯ</Big>
-      <Big x={540} y={400} s={pop(f, 6, fps)} size={60} color="#fff">ОШИБКА В CS —</Big>
-      {f >= v(5) && <div style={{position: 'absolute', left: 540, top: 600, transform: `translate(-50%,-50%) scale(${pop(f, v(5), fps)})`, textDecoration: 'line-through', fontFamily: 'Montserrat', fontWeight: 900, fontSize: 56, color: '#8f98a0'}}>не слитая катка</div>}
-      {f >= v(8) && <Big x={540} y={780} s={pop(f, v(8), fps, 320, 9)} size={70} color={RED}>СКИН ЗА 10 ₽</Big>}
-      {f >= v(8) && <div style={{position: 'absolute', left: 540, top: 920, transform: 'translate(-50%,-50%)', opacity: Math.min(1, pop(f, v(8), fps) * 2)}}><Img src={staticFile('oldacc/gloves.png')} style={{width: 280}} /></div>}
+      <div style={{position: 'absolute', left: 0, top: 520, width: 1080, height: 660, overflow: 'hidden'}}>
+        <Portrait f={f} bg="dorm" mood={f >= v(8) ? 'shocked' : 'worried'} look={f >= v(8) ? 0.5 : 0} scale={1.1} y={430} />
+      </div>
+      <Big x={540} y={130} s={pop(f, 2, fps)} size={60} color="#fff">САМАЯ ДОРОГАЯ</Big>
+      <Big x={540} y={220} s={pop(f, 6, fps)} size={60} color="#fff">ОШИБКА В CS —</Big>
+      {f >= v(5) && <div style={{position: 'absolute', left: 540, top: 330, transform: `translate(-50%,-50%) scale(${pop(f, v(5), fps)})`, textDecoration: 'line-through', fontFamily: 'Montserrat', fontWeight: 900, fontSize: 52, color: '#8f98a0'}}>не слитая катка</div>}
+      {f >= v(8) && <Big x={540} y={440} s={pop(f, v(8), fps, 320, 9)} size={74} color={RED}>СКИН ЗА 10 ₽</Big>}
+      {f >= v(8) && <div style={{position: 'absolute', left: 860, top: 760, transform: `translate(-50%,-50%) rotate(-10deg) scale(${pop(f, v(8), fps)})`, filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.6))'}}><Img src={staticFile('oldacc/gloves.png')} style={{width: 260}} /></div>}
     </>
   );
 };
