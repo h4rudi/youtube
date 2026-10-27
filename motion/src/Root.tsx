@@ -26,6 +26,7 @@ import {Zywoo, ZYWOO_FRAMES} from './zywoo/Zywoo';
 import {Irk, IRK_FRAMES} from './irk/Irk';
 import {Momcard, MOM_FRAMES} from './momcard/Momcard';
 import {Oldacc, OLDACC_FRAMES} from './oldacc/Oldacc';
+import {Knife, KNIFE_FRAMES} from './knife/Knife';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -44,6 +45,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Knife" component={Knife} durationInFrames={KNIFE_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Oldacc" component={Oldacc} durationInFrames={OLDACC_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Momcard" component={Momcard} durationInFrames={MOM_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Irk" component={Irk} durationInFrames={IRK_FRAMES} fps={30} width={1080} height={1920} />
