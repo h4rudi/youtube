@@ -261,28 +261,17 @@ const End: React.FC = () => {
 // ---------------------------------------------------------------- звук (эффекты тише голоса; деньги тихо)
 type Fx = [number, string, number];
 const SFX: Fx[] = [
-  [0, 'money/boom.wav', 0.4], [v(8), 'sfx2/pop.wav', 0.3], [v(14), 'sfx2/impact.wav', 0.45],
-  [v(22), 'money/flip.wav', 0.3], [v(31), 'sfx2/click.wav', 0.4], [S.first - 8, 'sfx2/stamp.wav', 0.4],
-  [S.first, 'sfx2/whoosh.wav', 0.3], [v(41), 'sfx2/ding.wav', 0.3], [v(42), 'sfx2/ding.wav', 0.3],
-  ...Array.from({length: 10}).map((_, i): Fx => [S.rage + i * 8, 'sfx2/tick.wav', 0.3]),
-  [S.minus, 'sfx2/deflate.wav', 0.4], [S.minus + 6, 'money/boom.wav', 0.4],
-  ...Array.from({length: 4}).map((_, i): Fx => [v(65) + i * 90, 'tilt/notif.wav', 0.3]),
-  [S.no, 'sfx2/error.wav', 0.35], [S.tips, 'sfx2/whoosh.wav', 0.3],
-  [S.t1, 'sfx2/blip.wav', 0.3], [S.t2, 'sfx2/blip.wav', 0.3], [S.t3, 'sfx2/blip.wav', 0.3],
-  [S.mom, 'money/creak.wav', 0.3], [S.end, 'money/boom.wav', 0.5],
+  [v(14), 'sfx2/impact.wav', 0.35], [S.first - 8, 'sfx2/stamp.wav', 0.3],
+  [v(41), 'sfx2/ding.wav', 0.25], [S.minus + 6, 'sfx2/impact.wav', 0.35],
+  [v(65), 'tilt/notif.wav', 0.25], [S.no, 'sfx2/error.wav', 0.25],
 ];
-const GAIN = 0.5;
+const GAIN = 0.45;
 
 const Sound: React.FC = () => (
   <>
     {VO.map((o) => (
       <Sequence key={o.src} from={fr(o.at)} durationInFrames={fr(o.dur) + 6}>
         <Audio src={staticFile(o.src)} volume={1} />
-      </Sequence>
-    ))}
-    {Array.from({length: Math.ceil(TOTAL / 11.5)}).map((_, i) => (
-      <Sequence key={i} from={Math.round(i * 11.5 * FPS)} durationInFrames={12 * FPS}>
-        <Audio src={staticFile('tilt/pad.wav')} volume={0.1} />
       </Sequence>
     ))}
     {SFX.map(([at, src, vol], i) => (
