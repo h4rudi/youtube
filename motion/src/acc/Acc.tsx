@@ -33,7 +33,7 @@ const Chip: React.FC<{x: number; y: number; s: number; bg: string; color?: strin
 );
 
 // аватарка-квадрат с лицом Лёхи (или серая «новая»)
-const Avatar: React.FC<{size: number; fresh?: boolean; mood?: 'neutral' | 'shocked' | 'happy' | 'worried' | 'tired'}> = ({size, fresh, mood = 'happy'}) => (
+export const Avatar: React.FC<{size: number; fresh?: boolean; mood?: 'neutral' | 'shocked' | 'happy' | 'worried' | 'tired'}> = ({size, fresh, mood = 'happy'}) => (
   <div style={{width: size, height: size, border: '4px solid #5c7e10', background: fresh ? '#3d4450' : 'linear-gradient(#2a3045, #12141c)', overflow: 'hidden', flexShrink: 0}}>
     {fresh
       ? <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Montserrat', fontWeight: 900, fontSize: size * 0.6, color: '#8f98a0'}}>?</div>
@@ -42,7 +42,7 @@ const Avatar: React.FC<{size: number; fresh?: boolean; mood?: 'neutral' | 'shock
 );
 
 // профиль Steam (раскладка как на скрине пользователя)
-const SteamProfile: React.FC<{vac: number; fresh?: boolean; f: number; items?: number; level?: number; name?: string; mood?: 'neutral' | 'shocked' | 'happy' | 'worried' | 'tired'}> = ({vac, fresh, f, items = 708, level = 32, name = 'Лёха', mood}) => {
+export const SteamProfile: React.FC<{vac: number; fresh?: boolean; f: number; items?: number; level?: number; name?: string; mood?: 'neutral' | 'shocked' | 'happy' | 'worried' | 'tired'}> = ({vac, fresh, f, items = 708, level = 32, name = 'Лёха', mood}) => {
   const pulse = vac > 0 ? 0.5 + 0.5 * Math.sin(f / 4) : 0;
   return (
     <div style={{position: 'absolute', left: 30, top: 150, width: 1020, height: 860, background: `linear-gradient(160deg, #2a3446, ${STEAM} 40%, #141a24)`, borderRadius: 16, overflow: 'hidden',
