@@ -100,21 +100,25 @@ const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const x2 = pop(f, v(4), fps, 300, 10);
+  const mood = f >= v(21) ? 'worried' : f >= v(17) ? 'happy' : f >= v(4) ? 'shocked' : 'neutral';
   return (
     <>
       <Bg glow="#5a2a10" />
-      <div style={{position: 'absolute', left: 540, top: 330, transform: 'translate(-50%,-50%)', display: 'flex', alignItems: 'center', gap: 24}}>
-        <div style={{background: ORANGE, color: '#fff', fontFamily: 'Montserrat', fontWeight: 900, fontSize: 48, padding: '24px 50px', borderRadius: 8}}>НАЙТИ МАТЧ</div>
-        <div style={{transform: `scale(${x2})`, opacity: Math.min(1, x2 * 2), background: '#1c1d20', border: `5px solid ${GOLD}`, color: GOLD, fontFamily: 'Russo One', fontSize: 64, padding: '12px 30px', borderRadius: 16,
+      <div style={{position: 'absolute', left: 0, top: 500, width: 1080, height: 680, overflow: 'hidden'}}>
+        <Portrait f={f} bg="dorm" mood={mood} look={0} scale={1.1} y={430} light={ORANGE} lightAmt={f >= v(4) ? 0.18 : 0.08} />
+      </div>
+      <div style={{position: 'absolute', left: 540, top: 170, transform: 'translate(-50%,-50%)', display: 'flex', alignItems: 'center', gap: 22}}>
+        <div style={{background: ORANGE, color: '#fff', fontFamily: 'Montserrat', fontWeight: 900, fontSize: 42, padding: '20px 40px', borderRadius: 8, whiteSpace: 'nowrap'}}>НАЙТИ МАТЧ</div>
+        <div style={{transform: `scale(${x2})`, opacity: Math.min(1, x2 * 2), background: '#1c1d20', border: `5px solid ${GOLD}`, color: GOLD, fontFamily: 'Russo One', fontSize: 58, padding: '10px 26px', borderRadius: 16,
           boxShadow: `0 0 ${30 + 20 * Math.sin(f / 4)}px ${GOLD}`}}>x2</div>
       </div>
       {f >= v(12) && (
-        <div style={{position: 'absolute', left: 540, top: 620, transform: `translate(-50%,-50%) scale(${pop(f, v(12), fps)})`, display: 'flex', alignItems: 'center', gap: 26, fontFamily: 'Russo One'}}>
-          <span style={{fontSize: 70, color: '#8f98a0', textDecoration: 'line-through'}}>+25</span><span style={{fontSize: 50, color: '#8f98a0'}}>→</span>
-          <span style={{fontSize: 110, color: GREEN, opacity: f >= v(17) ? 1 : 0.2}}>+50</span>
+        <div style={{position: 'absolute', left: 540, top: 330, transform: `translate(-50%,-50%) scale(${pop(f, v(12), fps)})`, display: 'flex', alignItems: 'center', gap: 22, fontFamily: 'Russo One'}}>
+          <span style={{fontSize: 60, color: '#8f98a0', textDecoration: 'line-through'}}>+25</span><span style={{fontSize: 44, color: '#8f98a0'}}>→</span>
+          <span style={{fontSize: 96, color: GREEN, opacity: f >= v(17) ? 1 : 0.2, textShadow: `0 0 30px ${GREEN}`}}>+50</span>
+          {f >= v(21) && <span style={{fontSize: 96, color: RED, marginLeft: 20, transform: `scale(${pop(f, v(21), fps, 320, 9)})`, textShadow: `0 0 30px ${RED}`}}>−50</span>}
         </div>
       )}
-      {f >= v(21) && <Big x={540} y={860} s={pop(f, v(21), fps, 320, 9)} size={110} color={RED}>−50</Big>}
     </>
   );
 };
