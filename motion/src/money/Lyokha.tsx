@@ -14,7 +14,7 @@ const brows: Record<Mood, [number, number, number, number]> = {
   neutral: [0, 0, 0, 0], worried: [16, -6, 0, 1], shocked: [14, 10, -14, 0], happy: [4, 6, -6, 0], tired: [-4, -2, 6, 0],
 };
 
-export const LyokhaHead: React.FC<{mood?: Mood; look?: number; blink?: number; sweat?: boolean; tears?: number; light?: string; lightAmt?: number; age?: number}> = ({mood = 'neutral', look = 0, blink = 0, sweat = false, tears = 0, light, lightAmt = 0, age = 0}) => {
+export const LyokhaHead: React.FC<{mood?: Mood; look?: number; blink?: number; sweat?: boolean; tears?: number; light?: string; lightAmt?: number; age?: number; hair?: string}> = ({mood = 'neutral', look = 0, blink = 0, sweat = false, tears = 0, light, lightAmt = 0, age = 0, hair = L.hair}) => {
   const [bi, bo, by] = brows[mood];
   const pupil = mood === 'shocked' ? 9 : 14;
   const lid = Math.max(blink, mood === 'tired' ? 0.35 : 0);
@@ -72,7 +72,7 @@ export const LyokhaHead: React.FC<{mood?: Mood; look?: number; blink?: number; s
         : <path d={mouth} stroke={INK} strokeWidth={6} fill="none" strokeLinecap="round" />}
       {/* волосы: шапка + рваная чёлка */}
       <path d="M-146 -10 C-170 -140 -80 -196 10 -192 C110 -190 170 -130 146 -10 L132 -40 L120 -76 C80 -66 40 -84 20 -96 L4 -60 L-18 -96 C-50 -80 -70 -74 -96 -86 L-112 -50 L-132 -64 Z"
-        fill={L.hair} stroke={INK} strokeWidth={6} strokeLinejoin="round" />
+        fill={hair} stroke={INK} strokeWidth={6} strokeLinejoin="round" />
       <path d="M-40 -170 Q10 -150 70 -168" stroke="#34313b" strokeWidth={6} fill="none" strokeLinecap="round" />
       {/* пот и слёзы */}
       {sweat && <path d="M118 -40 Q132 -18 124 -6 Q112 4 106 -10 Q104 -22 118 -40 Z" fill="#bfe3ff" stroke={INK} strokeWidth={3.5} />}
@@ -84,10 +84,10 @@ export const LyokhaHead: React.FC<{mood?: Mood; look?: number; blink?: number; s
 };
 
 // Бюст: голова + худи + наушники на шее
-export const LyokhaBust: React.FC<{mood?: Mood; look?: number; blink?: number; sweat?: boolean; tears?: number; light?: string; lightAmt?: number; age?: number}> = (p) => (
+export const LyokhaBust: React.FC<{mood?: Mood; look?: number; blink?: number; sweat?: boolean; tears?: number; light?: string; lightAmt?: number; age?: number; hair?: string; hood?: string}> = ({hood = L.hood, ...p}) => (
   <g>
     {/* худи */}
-    <path d="M-230 520 L-210 320 Q-200 250 -120 228 L120 228 Q200 250 210 320 L230 520 Z" fill={L.hood} stroke={INK} strokeWidth={6} />
+    <path d="M-230 520 L-210 320 Q-200 250 -120 228 L120 228 Q200 250 210 320 L230 520 Z" fill={hood} stroke={INK} strokeWidth={6} />
     <path d="M-120 228 Q0 300 120 228 L104 214 Q0 270 -104 214 Z" fill={L.hoodL} stroke={INK} strokeWidth={5} />
     <path d="M-40 290 L-46 400 M40 290 L46 400" stroke="#cfd3dc" strokeWidth={6} strokeLinecap="round" />
     <circle cx={-46} cy={404} r={7} fill="#cfd3dc" /><circle cx={46} cy={404} r={7} fill="#cfd3dc" />
