@@ -34,6 +34,7 @@ import {Faceit2x, FACEIT2X_FRAMES} from './faceit2x/Faceit2x';
 import {X2, X2_FRAMES} from './x2/X2';
 import {Mil, MIL_FRAMES} from './mil/Mil';
 import {Bad, BAD_FRAMES} from './bad/Bad';
+import {Mirage, MIRAGE_FRAMES} from './mirage/Mirage';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -52,6 +53,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Mirage" component={Mirage} durationInFrames={MIRAGE_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Bad" component={Bad} durationInFrames={BAD_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Mil" component={Mil} durationInFrames={MIL_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="X2" component={X2} durationInFrames={X2_FRAMES} fps={30} width={1080} height={1920} />
