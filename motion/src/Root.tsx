@@ -38,6 +38,7 @@ import {Mirage, MIRAGE_FRAMES} from './mirage/Mirage';
 import {WakeVideo, WAKE_FRAMES} from './wake/Wake';
 import {Hack, HACK_FRAMES} from './hack/Hack';
 import {Nik2, NIK2_FRAMES} from './nik2/Nik2';
+import {Sad, SAD_FRAMES} from './sad/Sad';
 import {VoiceTag, VoiceTagPreview, VoiceTagMini, VT_W, VT_H, VTM_W, VTM_H} from './VoiceTag';
 
 export const Root: React.FC = () => (
@@ -56,6 +57,7 @@ export const Root: React.FC = () => (
     <Composition id="VoiceTag" component={VoiceTag} durationInFrames={240} fps={60} width={VT_W} height={VT_H} />
     <Composition id="VoiceTagPreview" component={VoiceTagPreview} durationInFrames={240} fps={60} width={1920} height={1080} />
     <Composition id="VoiceTagMini" component={VoiceTagMini} durationInFrames={240} fps={60} width={VTM_W} height={VTM_H} />
+    <Composition id="Sad" component={Sad} durationInFrames={SAD_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Nik2" component={Nik2} durationInFrames={NIK2_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Hack" component={Hack} durationInFrames={HACK_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="Wake" component={WakeVideo} durationInFrames={WAKE_FRAMES} fps={30} width={1080} height={1920} />
