@@ -1,7 +1,7 @@
 // Ролик «Никита: 12 каток, 3 часа сна, 5 энергетиков» (9:16, ~58 с) в формате «Это Никита…»: хронология по неделям, счётчики.
 // Предостерегающий ролик: гибель показана без подробностей (падение, кардиограмма → прямая линия, экран гаснет),
 // в конце — карточка без голоса «персонаж выдуман, спи 7+ часов». Никита — тот же персонаж, что в «Первой игре Никиты».
-// Исходник пользователя: окно «Your match is ready» CS2 (public/nik2/ready.png). Писк монитора и прямая линия — сгенерированы.
+// Исходник пользователя: окно «Your match is ready» CS2 (public/nik2/ready.png). Писк монитора и прямая линия — сгенерированы. Банка — фото пользователя (public/nik2/can.png, фон вырезан).
 import React from 'react';
 import {AbsoluteFill, Audio, Img, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {loadFonts} from '../theme';
@@ -44,14 +44,8 @@ const Room: React.FC<{glow?: string; dark?: number}> = ({glow = '#5a8acb', dark 
     {dark > 0 && <AbsoluteFill style={{height: H, background: '#000', opacity: dark}} />}
   </>
 );
-const Can: React.FC<{w?: number; open?: boolean}> = ({w = 90, open}) => (
-  <svg width={w} height={w * 1.7} viewBox="0 0 60 102">
-    <rect x={6} y={8} width={48} height={90} rx={8} fill="#141414" stroke="#3a3a3a" strokeWidth={3} />
-    <rect x={8} y={30} width={44} height={44} fill={GREEN} />
-    <path d="M30 36 L22 54 L31 54 L26 70 L39 48 L30 48 L35 36 Z" fill="#0b0c12" />
-    <rect x={14} y={2} width={32} height={8} rx={3} fill="#666" />
-    {open && <circle cx={34} cy={6} r={4} fill="#222" />}
-  </svg>
+const Can: React.FC<{w?: number; open?: boolean}> = ({w = 90}) => (
+  <Img src={staticFile('nik2/can.png')} style={{width: w, height: 'auto', display: 'block', filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.6))'}} />
 );
 // кардиограмма: удары, пропуски, прямая линия
 const Ecg: React.FC<{f: number; gaps?: boolean; flat?: number; y?: number; color?: string}> = ({f, gaps, flat = 0, y = 600, color = GREEN}) => {
@@ -108,7 +102,7 @@ const Hook: React.FC = () => {
       <Chip x={540} y={170} s={pop(f, 2, fps)} bg={GOLD} color="#111" size={44}>НИКИТА · 17 ЛЕТ</Chip>
       {icon(v(7), 200, <span style={{fontFamily: 'Russo One', fontSize: 110, color: '#fff'}}>12</span>, 'каток в день')}
       {icon(v(11), 540, <span style={{fontFamily: 'Russo One', fontSize: 110, color: RED}}>3 ч</span>, 'сна')}
-      {icon(v(14), 880, <Can w={84} />, '5 энергетиков')}
+      {icon(v(14), 880, <Can w={60} />, '5 энергетиков')}
       {f >= v(25) && <Big x={540} y={700} s={pop(f, v(25), fps, 380, 8)} size={62} color={RED}>ЧЕРЕЗ 2 МЕСЯЦА ЕГО НЕ СТАНЕТ</Big>}
     </>
   );
@@ -254,7 +248,7 @@ const Card: React.FC = () => {
   );
 };
 
-// ---------------------------------------------------------------- звук: голос + тихий дрон + сердцебиение + писк монитора
+// ---------------------------------------------------------------- звук: голос + сердцебиение + писк монитора (без фоновой музыки)
 type Fx = [number, string, number];
 const SFX: Fx[] = [
   [v(7), 'sfx2/pop.wav', 0.25], [v(11), 'sfx2/pop.wav', 0.25], [v(14), 'sfx2/pop.wav', 0.25], [v(25), 'sfx2/impact.wav', 0.35],
@@ -272,7 +266,6 @@ const Sound: React.FC = () => (
         <Audio src={staticFile(o.src)} volume={1} />
       </Sequence>
     ))}
-    <Audio src={staticFile('wake/tension.mp3')} volume={(x) => (x >= v(104) ? 0 : 0.11)} />
     <Sequence from={v(104)} durationInFrames={FPS * 3}><Audio src={staticFile('nik2/flat.mp3')} volume={0.5} /></Sequence>
     {SFX.map(([at, src, vol], i) => (
       <Sequence key={i} from={Math.max(0, at)} durationInFrames={FPS * 2}>
