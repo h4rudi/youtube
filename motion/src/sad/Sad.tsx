@@ -125,8 +125,8 @@ const A18: React.FC = () => {
         <div style={{fontWeight: 900, fontSize: 42, marginTop: 14}}>Вы не прошли по конкурсу</div>
       </div>
       <div style={{position: 'absolute', left: 540, top: 780, transform: 'translate(-50%,-50%)', opacity: fade(f, v(47)), display: 'flex', alignItems: 'center', gap: 20}}>
-        <Img src={staticFile('x2/lvl9.png')} style={{width: 120}} />
-        <span style={{fontFamily: 'Russo One', fontSize: 90, color: '#e6e8ec'}}>2 000 ELO</span>
+        <Img src={staticFile('x2/lvl10.png')} style={{width: 120}} />
+        <span style={{fontFamily: 'Russo One', fontSize: 90, color: '#e6e8ec', whiteSpace: 'nowrap'}}>2 000 ELO</span>
       </div>
       <Text x={540} y={920} at={v(47)} size={34} color={MUTED}>«зато…»</Text>
     </>
@@ -200,7 +200,7 @@ const A25: React.FC = () => {
         <>
           <Room f={f} from={v(87)} to={S.chat} mood="tired" stubble={0.8} />
           <div style={{position: 'absolute', left: 540, top: 200, transform: 'translate(-50%,-50%)', opacity: fade(f, v(93)), display: 'flex', alignItems: 'center', gap: 16}}>
-            <Img src={staticFile('x2/lvl9.png')} style={{width: 90}} /><span style={{fontFamily: 'Russo One', fontSize: 70, color: '#e6e8ec'}}>2 000</span>
+            <Img src={staticFile('x2/lvl10.png')} style={{width: 90}} /><span style={{fontFamily: 'Russo One', fontSize: 70, color: '#e6e8ec'}}>2 000</span>
           </div>
           {cross(v(96), 330, 'команда')}
           {cross(v(98), 410, 'профессия')}
